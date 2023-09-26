@@ -1,0 +1,28 @@
+$(document).ready(function() {
+   maskSSN();
+   $('#ssn_c').on('input','maskSSN();');
+   //var emberSSN = "";
+});
+function maskSSN(){
+//$('#ssn_c').on('input', function () {
+  var val = $(this).val();
+  //var cleanVal = '';
+  
+  //console.log('clean val', cleanVal);
+  //emberSSN = cleanVal;
+  if(val.length < 8){
+  var valMask = val.replace(/[0-9]/g, '*');
+  
+  $(this).val(valMask);
+  }
+//});
+}
+//});
+/*function hideSSN(){
+   //$(this).prop('value', function(i, o) {
+   var ssn = $('#ssn_c').val();
+      if (ssn.length < 7) {
+         return ssn.replace(/\d/g,"*")
+      }
+   //})
+}*/

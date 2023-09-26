@@ -1,0 +1,86 @@
+<?php
+// created: 2017-06-06 17:12:58
+$dictionary["def_client_insurance_cases"] = array (
+  'true_relationship_type' => 'one-to-many',
+  'relationships' => 
+  array (
+    'def_client_insurance_cases' => 
+    array (
+      'lhs_module' => 'DEF_Client_Insurance',
+      'lhs_table' => 'def_client_insurance',
+      'lhs_key' => 'id',
+      'rhs_module' => 'Cases',
+      'rhs_table' => 'cases',
+      'rhs_key' => 'id',
+      'relationship_type' => 'many-to-many',
+      'join_table' => 'def_client_insurance_cases_c',
+      'join_key_lhs' => 'def_client_insurance_casesdef_client_insurance_ida',
+      'join_key_rhs' => 'def_client_insurance_casescases_idb',
+    ),
+  ),
+  'table' => 'def_client_insurance_cases_c',
+  'fields' => 
+  array (
+    0 => 
+    array (
+      'name' => 'id',
+      'type' => 'varchar',
+      'len' => 36,
+    ),
+    1 => 
+    array (
+      'name' => 'date_modified',
+      'type' => 'datetime',
+    ),
+    2 => 
+    array (
+      'name' => 'deleted',
+      'type' => 'bool',
+      'len' => '1',
+      'default' => '0',
+      'required' => true,
+    ),
+    3 => 
+    array (
+      'name' => 'def_client_insurance_casesdef_client_insurance_ida',
+      'type' => 'varchar',
+      'len' => 36,
+    ),
+    4 => 
+    array (
+      'name' => 'def_client_insurance_casescases_idb',
+      'type' => 'varchar',
+      'len' => 36,
+    ),
+  ),
+  'indices' => 
+  array (
+    0 => 
+    array (
+      'name' => 'def_client_insurance_casesspk',
+      'type' => 'primary',
+      'fields' => 
+      array (
+        0 => 'id',
+      ),
+    ),
+    1 => 
+    array (
+      'name' => 'def_client_insurance_cases_ida1',
+      'type' => 'index',
+      'fields' => 
+      array (
+        0 => 'def_client_insurance_casesdef_client_insurance_ida',
+      ),
+    ),
+    2 => 
+    array (
+      'name' => 'def_client_insurance_cases_alt',
+      'type' => 'alternate_key',
+      'fields' => 
+      array (
+        0 => 'def_client_insurance_casescases_idb',
+      ),
+    ),
+  ),
+);

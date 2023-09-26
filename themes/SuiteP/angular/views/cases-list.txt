@@ -1,0 +1,1528 @@
+<div class="listViewBody" ng-if="showCasesList">
+    <script type="text/javascript" src="include/javascript/popup_parent_helper.js?v=-X3bS6lOB-EZRqhczixknw"></script>
+    <script>SUGAR.savedViews.displayColumns = "NAME|STATUS|DATE_OF_INCIDENT_C|MDP_ESTIMATED_CASE_VALUE_C|ASSIGNED_USER_NAME|TOTAL_CASE_LENGTH_C";SUGAR.savedViews.selectedOrderBy = "NAME";SUGAR.savedViews.selectedSortOrder = "ASC";</script>
+        <script>
+ function addXMLRequestCallback(callback) {
+                var oldSend, i;
+                if (XMLHttpRequest.callbacks) {
+                    // we've already overridden send() so just add the callback
+                    XMLHttpRequest.callbacks.push(callback);
+                } else {
+                    // create a callback queue
+                    XMLHttpRequest.callbacks = [callback];
+                    // store the native send()
+                    oldSend = XMLHttpRequest.prototype.send;
+                    // override the native send()
+                    XMLHttpRequest.prototype.send = function () {
+                        // process the callback queue
+                        for (i = XMLHttpRequest.callbacks.length - 1; i >= 0; i--) {
+                            XMLHttpRequest.callbacks[i](this);
+                        }
+                        // call the native send()
+                        oldSend.apply(this, arguments);
+                    }
+                }
+            }
+
+            function refreshSearchForm() {
+                $('.search_form textarea').each(function (i, e) {
+                    $(e).css('max-width', $(e).parent().width());
+                });
+                if (!$('#search_form .tabFormAdvLink').prev().hasClass('clear')) {
+                    $('#search_form .tabFormAdvLink').before('<div class="clear"></div>');
+                }
+                $('#search_form .dateTimeRangeChoice').css({
+                    'white-space': 'initial',
+                    'display': 'block'
+                });
+            }
+
+            $(function () {
+                var refreshSearchFormIntervals = [];
+                var refreshSearchFormIntervalsCountDown = 100;
+                addXMLRequestCallback(function (xhr) {
+                    refreshSearchFormIntervalsCountDown = 100;
+                    refreshSearchFormIntervals.push(setInterval(function () {
+                        refreshSearchForm();
+                        refreshSearchFormIntervalsCountDown -= 1 / refreshSearchFormIntervals.length;
+                        if (refreshSearchFormIntervalsCountDown <= 0) {
+                            $.each(refreshSearchFormIntervals, function (i, e) {
+                                clearInterval(e);
+                            });
+                            refreshSearchFormIntervals = [];
+                        }
+                    }, 100));
+                });
+            });
+
+            function submitOnEnter(e) {
+                var characterCode = (e && e.which) ? e.which : event.keyCode;
+                if (characterCode == 13 && event.target.type !== "textarea") {
+                    document.getElementById('search_form').submit();
+                    return false;
+                } else {
+                    return true;
+                }
+            }
+        </script>
+
+
+            <div id="searchDialog" class="modal fade modal-search" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Filter</h4>
+                <!-- Nav tabs -->
+                <h5 class="searchTabHeader mobileOnly basic">Quick Filter</h5>
+                <h5 class="searchTabHeader mobileOnly advanced active">Advanced Filter</h5>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="searchTabHandler basic"><a href="javascript:void(0)" onclick="listViewSearchIcon.toggleSearchDialog('basic'); return false;" aria-controls="searchList" role="tab" data-toggle="tab">Quick Filter</a></li>
+                    <li class="searchTabHandler advanced active"><a href="javascript:void(0)" onclick="listViewSearchIcon.toggleSearchDialog('advanced'); return false;" aria-controls="searchList" role="tab" data-toggle="tab">Advanced Filter</a></li>
+                </ul>
+            </div>
+            <div class="modal-body" id="searchList">
+    <form name="search_form" id="search_form" class="search_form  ng-pristine ng-valid" method="post" action="index.php?module=Cases&amp;action=index" onkeydown="submitOnEnter(event);">
+        <input type="hidden" name="searchFormTab" value="advanced_search">
+        <input type="hidden" name="module" value="Cases">
+        <input type="hidden" name="action" value="index">
+        <input type="hidden" name="query" value="true">
+                    <div id="Casesbasic_searchSearchForm" style="display:none" class="edit view search basic"></div>
+                    <div id="Casesadvanced_searchSearchForm" style="" class="edit view search advanced">
+<script>
+
+    $(function () {
+        var $dialog = $('<div></div>')
+                .html(SUGAR.language.get('app_strings', 'LBL_SEARCH_HELP_TEXT'))
+                .dialog({
+                    autoOpen: false,
+                    title: SUGAR.language.get('app_strings', 'LBL_SEARCH_HELP_TITLE'),
+                    width: 700
+                });
+
+        $('.help-search').click(function () {
+            $dialog.dialog('open');
+            // prevent the default action, e.g., following a link
+        });
+
+    });
+
+</script>
+<div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div class="">
+
+
+
+
+
+
+            <div class="col-xs-12">
+                                <label for="case_number_advanced">Number</label>
+                            </div>
+            <div class="form-item">
+
+
+<input type="text" name="case_number_advanced" id="case_number_advanced" size="30" value="" title="" tabindex="">
+                            </div>
+        </div>
+    </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div class="">
+
+
+
+
+
+
+            <div class="col-xs-12">
+                                <label for="name_advanced">Case Ref</label>
+                            </div>
+            <div class="form-item">
+
+
+<input type="text" name="name_advanced" id="name_advanced" size="30" maxlength="255" value="" title="">
+                            </div>
+        </div>
+    </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div class="">
+
+
+
+
+
+
+            <div class="col-xs-12">
+                                <label for="account_name_advanced">Organization Name</label>
+                            </div>
+            <div class="form-item yui-ac">
+
+<input type="text" name="account_name_advanced" class="sqsEnabled yui-ac-input" id="account_name_advanced" size="" value="" title="" autocomplete="off"><div id="search_form_account_name_advanced_results" class="yui-ac-container"><div class="yui-ac-content" style="display: none;"><div class="yui-ac-hd" style="display: none;"></div><div class="yui-ac-bd"><ul><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li></ul></div><div class="yui-ac-ft" style="display: none;"></div></div></div>
+<input type="hidden" id="account_id_advanced" value="">
+<span class="id-ff multiple">
+<button type="button" name="btn_account_name_advanced" title="Select" class="button firstChild" value="Select" onclick="open_popup(&quot;Accounts&quot;, 600, 400, &quot;&quot;, true, false, {&quot;call_back_function&quot;:&quot;set_return&quot;,&quot;form_name&quot;:&quot;search_form&quot;,&quot;field_to_name_array&quot;:{&quot;id&quot;:&quot;account_id_advanced&quot;,&quot;name&quot;:&quot;account_name_advanced&quot;}}, &quot;single&quot;, true);"><!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="32px" height="32px" id="svg2984" version="1.1" inkscape:version="0.48.4 r9939" sodipodi:docname="id-ff-select.svg">
+  <defs id="defs2986"></defs>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="11.197802" inkscape:cx="-10.344456" inkscape:cy="16" inkscape:current-layer="layer1" showgrid="true" inkscape:grid-bbox="true" inkscape:document-units="px" inkscape:window-width="1855" inkscape:window-height="1056" inkscape:window-x="65" inkscape:window-y="24" inkscape:window-maximized="1"></sodipodi:namedview>
+  <metadata id="metadata2989">
+    <rdf:rdf>
+      <cc:work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type>
+        <dc:title></dc:title>
+      </cc:work>
+    </rdf:rdf>
+  </metadata>
+  <g id="layer1" inkscape:label="Layer 1" inkscape:groupmode="layer">
+    <rect style="fill:#ffffff;fill-opacity:1;stroke:none" id="rect2992" width="1.3155504" height="5.6083984" x="1.3675269" y="22.489826" transform="matrix(0.77082373,-0.63704849,0.63704849,0.77082373,0,0)"></rect>
+    <path style="fill:#ffffff;fill-opacity:1;stroke:none" d="m 11.950845,11.212403 8.09831,2.220324 -7.442945,6.151234 z" id="rect2994" inkscape:connector-curvature="0" sodipodi:nodetypes="cccc"></path>
+  </g>
+</svg>
+</button><button type="button" name="btn_clr_account_name_advanced" title="Clear" class="button lastChild" onclick="this.form.account_name_advanced.value = ''; this.form.account_id_advanced.value = '';" value="Clear"><!--?xml version="1.0" encoding="UTF-8" standalone="no"?-->
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="32px" height="32px" id="svg3782" version="1.1" inkscape:version="0.48.4 r9939" sodipodi:docname="id-ff-clear.svg" inkscape:export-filename="/var/www/html/sdk/instances/suitecrm-development-mysql/themes/SuiteP/images/id-ff-add.png" inkscape:export-xdpi="90" inkscape:export-ydpi="90">
+  <defs id="defs3784"></defs>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="11.197802" inkscape:cx="-15.524044" inkscape:cy="16" inkscape:current-layer="layer1" showgrid="true" inkscape:grid-bbox="true" inkscape:document-units="px" inkscape:window-width="1855" inkscape:window-height="1056" inkscape:window-x="65" inkscape:window-y="24" inkscape:window-maximized="1"></sodipodi:namedview>
+  <metadata id="metadata3787">
+    <rdf:rdf>
+      <cc:work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"></dc:type>
+        <dc:title></dc:title>
+      </cc:work>
+    </rdf:rdf>
+  </metadata>
+  <g id="layer1" inkscape:label="Layer 1" inkscape:groupmode="layer">
+    <rect style="fill:#ffffff;fill-opacity:1;stroke:none" id="rect3790" width="10.805693" height="2.6381791" x="17.287718" y="-1.3822368" transform="matrix(0.70710678,0.70710678,-0.70710678,0.70710678,0,0)"></rect>
+    <rect style="fill:#ffffff;fill-opacity:1;stroke:none" id="rect3790-8" width="10.805693" height="2.6381791" x="-5.4028463" y="-23.946505" transform="matrix(-0.70710678,0.70710678,-0.70710678,-0.70710678,0,0)"></rect>
+  </g>
+</svg>
+</button>
+</span>
+
+                            </div>
+        </div>
+    </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div class="">
+
+
+
+
+
+
+            <div class="col-xs-12">
+                                <label for="type_advanced">Type</label>
+                            </div>
+            <div class="form-item">
+
+<select name="type_advanced[]" id="type_advanced" size="6" class="templateGroupChooser" multiple="1">
+<option label="" value=""></option>
+<option label="Auto Crash" value="Auto_Crash">Auto Crash</option>
+<option label="Auto crash into a Pedestrian" value="Auto_V_Pedestrian">Auto crash into a Pedestrian</option>
+<option label="Auto Crash Wrongful Death" value="Auto_Crash_Death">Auto Crash Wrongful Death</option>
+<option label="Auto v. Pedestrian Wrongful Death" value="Auto_v_Pedistrian_Death">Auto v. Pedestrian Wrongful Death</option>
+<option label="Auto with Companions" value="Auto_with_Companions">Auto with Companions</option>
+<option label="Auto with Companions with a Wrongful Death" value="Auto_with_Companions_with_Death">Auto with Companions with a Wrongful Death</option>
+<option label="Bankruptcy" value="Bankruptcy">Bankruptcy</option>
+<option label="Bicycle Crash" value="Bicycle_Crash">Bicycle Crash</option>
+<option label="Bicycle Crash Wrongful Death" value="Bicycle_Crash_Death">Bicycle Crash Wrongful Death</option>
+<option label="Dog Bite" value="Dog_Bite">Dog Bite</option>
+<option label="Dog Bite Wrongful Death" value="Dog_Bite_Death">Dog Bite Wrongful Death</option>
+<option label="DUI Auto Crash" value="DUI_Auto_Crash">DUI Auto Crash</option>
+<option label="DUI Auto Crash Wrongful Death" value="DUI_Auto_Crash_Death">DUI Auto Crash Wrongful Death</option>
+<option label="DUI Auto with Companions" value="DUI_Auto_with_Companions">DUI Auto with Companions</option>
+<option label="DUI Auto with Companions with a Wrongful Death" value="DUI_Auto_with_Companion_with_Death">DUI Auto with Companions with a Wrongful Death</option>
+<option label="Fee Petition" value="Fee_Petition">Fee Petition</option>
+<option label="Medical Malpractice" value="Medical_Malpractice">Medical Malpractice</option>
+<option label="Medical Malpractice Pre-Suit" value="Medical_Malpractice_Pre_Suit">Medical Malpractice Pre-Suit</option>
+<option label="Medical Malpractice Wrongful Death" value="Medical_Malpractice_Death">Medical Malpractice Wrongful Death</option>
+<option label="Miscellaneous" value="Miscellaneous_type_Case">Miscellaneous</option>
+<option label="Miscellaneous Case with a Wrongful Death" value="Miscellaneous_type_Case_Death">Miscellaneous Case with a Wrongful Death</option>
+<option label="Motorcycle Crash" value="Motorcycle_Crash">Motorcycle Crash</option>
+<option label="Motorcycle Crash Wrongful Death" value="Motorcycle_Crash_Death">Motorcycle Crash Wrongful Death</option>
+<option label="Multiple Claims case with Companions and a Wrongful Death" value="Multiple_Claims_Companions_Death">Multiple Claims case with Companions and a Wrongful Death</option>
+<option label="Multiple Claims in One" value="Multiple_Claims_in_One">Multiple Claims in One</option>
+<option label="Multiple Claims in one with a Wrongful Death" value="Multiple_Claims_in_one_with_Death">Multiple Claims in one with a Wrongful Death</option>
+<option label="Multiple Claims in One with Companions" value="Multiple_Claims_Companion">Multiple Claims in One with Companions</option>
+<option label="Negligent Security" value="Negligent_Security">Negligent Security</option>
+<option label="Negligent Security Wrongful Death" value="Negligent_Security_Death">Negligent Security Wrongful Death</option>
+<option label="Nursing Home Neglect" value="Nursing_Home_Neglect">Nursing Home Neglect</option>
+<option label="Nursing Home Pre-Suit" value="Nursing_Home_Pre_Suit">Nursing Home Pre-Suit</option>
+<option label="Nursing Home Wrongful Death" value="Nursing_Home_Death">Nursing Home Wrongful Death</option>
+<option label="Pharmacy Negligence" value="Pharmacy_Negligence">Pharmacy Negligence</option>
+<option label="Pharmacy Negligence Wrongful Death" value="Pharmacy_Negligence_Death">Pharmacy Negligence Wrongful Death</option>
+<option label="Premises Liability" value="Premises_Liability">Premises Liability</option>
+<option label="Probate Estate" value="Probate_Estate">Probate Estate</option>
+<option label="Probate Guardianship" value="Probate_Guardianship">Probate Guardianship</option>
+<option label="Probate Litigation" value="Probate_Litigation">Probate Litigation</option>
+<option label="Products Liability" value="Products_Liability">Products Liability</option>
+<option label="Products Liability Wrongful Death" value="Products_Liability_Death">Products Liability Wrongful Death</option>
+<option label="Slip and Fall" value="Slip_and_Fall">Slip and Fall</option>
+<option label="Slip and Fall Wrongful Death" value="Slip_and_Fall_Death">Slip and Fall Wrongful Death</option>
+<option label="Social Security" value="Social_Security">Social Security</option>
+<option label="Trip and Fall" value="Trip_and_Fall">Trip and Fall</option>
+<option label="Trip and Fall Wrongful Death" value="Trip_and_Fall_Death">Trip and Fall Wrongful Death</option>
+<option label="Trucking Crash" value="Trucking_Crash">Trucking Crash</option>
+<option label="Trucking Crash Wrongful Death" value="Trucking_Crash_Death">Trucking Crash Wrongful Death</option>
+<option label="Workers Compensation" value="Workers_Compensation">Workers Compensation</option>
+<option label="Workers Compensation Wrongful Death" value="Workers_Compensation_Death">Workers Compensation Wrongful Death</option>
+</select>
+
+
+                            </div>
+        </div>
+    </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div class="">
+
+
+
+
+
+
+            <div class="col-xs-12">
+                                <label for="state_advanced">State</label>
+                            </div>
+            <div class="form-item">
+
+<select name="state_advanced[]" id="state_advanced" size="6" class="templateGroupChooser" multiple="1">
+<option label="Open" value="Open">Open</option>
+<option label="Closed" value="Closed">Closed</option>
+</select>
+
+
+                            </div>
+        </div>
+    </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div class="">
+
+
+
+
+
+
+            <div class="col-xs-12">
+                                <label for="status_advanced">Status</label>
+                            </div>
+            <div class="form-item">
+
+<select name="status_advanced[]" id="status_advanced" size="6" class="templateGroupChooser" multiple="1">
+<option label="" value=""></option>
+<option label="Pre-Suit 1 Investigation" value="PreSuit_1">Pre-Suit 1 Investigation</option>
+<option label="Med Mal Pre-Suit 1 Ordering Medical records" value="Med_Mal_PreSuit_1">Med Mal Pre-Suit 1 Ordering Medical records</option>
+<option label="Med Mal Pre-Suit 2 Have the records looking for an Expert" value="Med_Mal_PreSuit_2">Med Mal Pre-Suit 2 Have the records looking for an Expert</option>
+<option label="Med Mal Pre-Suit 3 We have sent our Notice of Intent" value="Med_Mal_PreSuit_3">Med Mal Pre-Suit 3 We have sent our Notice of Intent</option>
+<option label="Pre-Suit 2 Treating" value="PreSuit_2">Pre-Suit 2 Treating</option>
+<option label="Pre-Suit 3 Order all records and prepare a Formal Demand Letter" value="PreSuit_3">Pre-Suit 3 Order all records and prepare a Formal Demand Letter</option>
+<option label="Pre-Suit 4 Prepare a quick Go Fish Demand Letter" value="PreSuit_4">Pre-Suit 4 Prepare a quick Go Fish Demand Letter</option>
+<option label="Pre-Suit 5 Negotiations Period of 45 days with just one Liability carrier when there is no UM" value="PreSuit_5">Pre-Suit 5 Negotiations Period of 45 days with just one Liability carrier when there is no UM</option>
+<option label="Pre-Suit 5.1 Negotiations Period of 45 days with Multiple Liability Carriers and no UM" value="PreSuit_5.1">Pre-Suit 5.1 Negotiations Period of 45 days with Multiple Liability Carriers and no UM</option>
+<option label="Pre-Suit 5.2 Negotiations Period of 45 days with BI carrier but later there will be a UM demand" value="PreSuit_5.2">Pre-Suit 5.2 Negotiations Period of 45 days with BI carrier but later there will be a UM demand</option>
+<option label="Pre-Suit 5.3 Negotiations Period of 65 days with UM carrier only" value="PreSuit_5.3">Pre-Suit 5.3 Negotiations Period of 65 days with UM carrier only</option>
+<option label="Pre-Suit 5.4 45 day and 65 Day Negotiation Periods when we send a BI and UM at the same time" value="PreSuit_5.4">Pre-Suit 5.4 45 day and 65 Day Negotiation Periods when we send a BI and UM at the same time</option>
+<option label="Pre-Suit 5.5 We extend the time to respond to our Offer to Settle for up to 30 more days" value="PreSuit_5.5">Pre-Suit 5.5 We extend the time to respond to our Offer to Settle for up to 30 more days</option>
+<option label="Pre-Suit 6 Decision to File Suit" value="PreSuit_6">Pre-Suit 6 Decision to File Suit</option>
+<option label="Pre-Suit 6.1 Attorney to talk to client" value="PreSuit_6.1">Pre-Suit 6.1 Attorney to talk to client</option>
+<option label="Pre-Suit 6.2 Letter sent to client to fill out Pre-Suit Roggs" value="PreSuit_6.2">Pre-Suit 6.2 Letter sent to client to fill out Pre-Suit Roggs</option>
+<option label="Pre-Suit 6.3 Waiting for Client to answer Pre-Suit Roggs" value="PreSuit_6.3">Pre-Suit 6.3 Waiting for Client to answer Pre-Suit Roggs</option>
+<option label="Pre-Suit 6.4 Reminder to Answer Roggs or else take the last offer" value="PreSuit_6.4">Pre-Suit 6.4 Reminder to Answer Roggs or else take the last offer</option>
+<option label="Pre-Suit 6.5 Answer Roggs soon or we will close your file" value="PreSuit_6.5">Pre-Suit 6.5 Answer Roggs soon or we will close your file</option>
+<option label="Pre-Suit 6.6 Roggs are answered and Lawyer to prepare Complaint" value="PreSuit_6.6">Pre-Suit 6.6 Roggs are answered and Lawyer to prepare Complaint</option>
+<option label="Lit 1 Obtaining Service upon All Defendants" value="Lit_1">Lit 1 Obtaining Service upon All Defendants</option>
+<option label="Lit 2 Every Defendant has Answered" value="Lit_2">Lit 2 Every Defendant has Answered</option>
+<option label="Lit 3 Discovery Phase for Punitive Damages" value="Lit_3">Lit 3 Discovery Phase for Punitive Damages</option>
+<option label="Lit 4 Waiting for a Trial Date to be assigned" value="Lit_4">Lit 4 Waiting for a Trial Date to be assigned</option>
+<option label="Lit 5 We have a Trial Date" value="Lit_5">Lit 5 We have a Trial Date</option>
+<option label="Lit 6 Discovery Cut Off" value="Lit_6">Lit 6 Discovery Cut Off</option>
+<option label="Lit 7 Trial itself" value="Lit_7">Lit 7 Trial itself</option>
+<option label="Lit 8 Post Trial Motions" value="Lit_8">Lit 8 Post Trial Motions</option>
+<option label="Appeal Pending" value="Appeal_Pending">Appeal Pending</option>
+<option label="Referred Out" value="Referred_Out">Referred Out</option>
+<option label="Adiosed" value="Adiosed">Adiosed</option>
+<option label="Pending Reductions" value="Pending_Reductions">Pending Reductions</option>
+<option label="Pending Signed Closing" value="Pending_Signed_Closing">Pending Signed Closing</option>
+<option label="Pending Adios waiting for return of the Green Card" value="Pending_Adios">Pending Adios waiting for return of the Green Card</option>
+<option label="Closed" value="Closed">Closed</option>
+</select>
+
+
+                            </div>
+        </div>
+    </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div class="">
+
+
+
+
+
+
+            <div class="col-xs-12">
+                                <label for="assigned_user_id_advanced">Assigned to</label>
+                            </div>
+            <div class="form-item">
+
+<select name="assigned_user_id_advanced[]" id="assigned_user_id_advanced" size="6" class="templateGroupChooser" multiple="1">
+<option label="Administrator" value="1">Administrator</option>
+</select>
+
+
+                            </div>
+        </div>
+    </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div class="">
+
+
+
+
+
+
+            <div class="col-xs-12">
+                                <label for="priority_advanced">Priority</label>
+                            </div>
+            <div class="form-item">
+
+<select name="priority_advanced[]" id="priority_advanced" size="6" class="templateGroupChooser" multiple="1">
+<option label="" value=""></option>
+<option label="High" value="P1">High</option>
+<option label="Medium" value="P2">Medium</option>
+<option label="Low" value="P3">Low</option>
+</select>
+
+
+                            </div>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            &nbsp;
+        </div>
+    </div>
+
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+                        <div class="" scope="row" width="10%" nowrap="nowrap">
+                <div class="col-xs-12">
+                    <label>Save filter as:</label>
+                </div>
+                <div class="form-item" width="30%" nowrap="">
+                    <input type="text" name="saved_search_name">
+                    <input type="hidden" name="search_module" value="">
+                    <input type="hidden" name="saved_search_action" value="">
+                    <input title="Save" value="Save" class="button" type="button" name="saved_search_submit" onclick="SUGAR.savedViews.setChooser(); return SUGAR.savedViews.saved_search_action(&quot;save&quot;);">
+                </div>
+            </div>
+            <div class="hideUnusedSavedSearchElements" scope="row" width="10%" nowrap="nowrap" style="display: none;">
+                <label>Modify current filter: <span id="curr_search_name"></span></label>
+            </div>
+            <div class="hideUnusedSavedSearchElements" width="30%" nowrap="" style="display: none;">
+                <input class="button" onclick="SUGAR.savedViews.setChooser(); return SUGAR.savedViews.saved_search_action(&quot;update&quot;)" value="Update" title="Update" name="ss_update" id="ss_update" type="button" disabled="">
+                <input class="button" onclick="return SUGAR.savedViews.saved_search_action(&quot;delete&quot;, &quot;Are you sure you want to delete the selected Saved Filter?&quot;)" value="Delete" title="Delete" name="ss_delete" id="ss_delete" type="button" disabled="">
+            </div>
+        </div>
+        <div>
+            <div colspan="6">
+                <div id="inlineSavedSearch">
+                    <div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div style="display:none;">
+            <input id="displayColumnsDef" type="hidden" name="displayColumns">
+            <input id="hideTabsDef" type="hidden" name="hideTabs">
+            <div id="edit_tabs" style="">        <table cellpadding="0" cellspacing="0" border="0">
+
+        <tbody><tr>
+            <td>&nbsp;</td>
+            <td scope="row" id="chooser_display_tabs_text" align="center"><nobr>Display Columns</nobr></td>            <td>&nbsp;</td>
+            <td scope="row" id="chooser_hide_tabs" align="center"><nobr>Hide Columns</nobr></td><td>&nbsp;</td></tr><tr><td valign="top" style="padding-right: 2px; padding-left: 2px;" align="center"><a id="chooser_display_tabs_up_arrow" onclick="return SUGAR.tabChooser.up('display_tabs','display_tabs','hide_tabs');"><img src="themes/default/images/uparrow_big.gif?v=-X3bS6lOB-EZRqhczixknw" border="0" style="margin-bottom: 1px;" alt="Move selected entry up in the displayed list order"></a><br>
+                     <a id="chooser_hide_tabs_down_arrow" onclick="return SUGAR.tabChooser.down('display_tabs','display_tabs','hide_tabs');"><img src="themes/default/images/downarrow_big.gif?v=-X3bS6lOB-EZRqhczixknw" border="0" style="margin-top: 1px;" alt="Move selected entry down in the displayed list order"></a>                </td>
+                <td align="center">
+                    <table border="0" cellspacing="0" cellpadding="0" align="center">
+                        <tbody><tr>
+                            <td id="display_tabs_td" align="center">
+                            <select id="display_tabs" name="display_tabs[]" size="7" multiple="multiple" class="templateGroupChooser"><option value="NAME">Case Name</option><option value="STATUS">Status</option><option value="DATE_OF_INCIDENT_C">Date of Incident</option><option value="MDP_ESTIMATED_CASE_VALUE_C">MDP Est Case Value</option><option value="ASSIGNED_USER_NAME">Assigned Lawyer</option><option value="TOTAL_CASE_LENGTH_C">Total Case Length</option></select></td>
+            </tr>
+            </tbody></table>
+            </td><td valign="top" style="padding-right: 2px; padding-left: 2px;" align="center"><a id="chooser_display_tabs_left_arrow" onclick="return SUGAR.tabChooser.right_to_left('display_tabs','hide_tabs', '7', '7', '');"><img src="themes/default/images/leftarrow_big.gif?v=-X3bS6lOB-EZRqhczixknw" border="0" style="margin-right: 1px;" alt="Move selected entry to the list on the left"></a><a id="chooser_display_tabs_left_to_right" onclick="return SUGAR.tabChooser.left_to_right('display_tabs','hide_tabs', '7', '7');"><img src="themes/default/images/rightarrow_big.gif?v=-X3bS6lOB-EZRqhczixknw" border="0" style="margin-left: 1px;" alt="Move selected entry to the list on the right"></a></td>
+                <td id="hide_tabs_td" align="center">
+                <select id="hide_tabs" name="hide_tabs[]" size="7" multiple="multiple" class="groupChooser"></select></td><td valign="top" style="padding-right: 2px; padding-left: 2px;" align="center"><script>var object_refs = new Object();object_refs['hide_tabs'] = document.getElementById('hide_tabs');</script><script>
+                object_refs['display_tabs'] = document.getElementById('display_tabs');
+                </script></td></tr>
+            </tbody></table></div>
+            <br>
+        </div>
+        <div class="col-xs-12">
+            <label>Order by column</label>
+
+        </div>
+        <div class="form-item">
+            <select name="orderBy" id="orderBySelect"></select>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4 col-advanced-search">
+        <div class="col-xs-12">
+            <label>Direction</label>
+        </div>
+        <div class="form-item radios">
+            <div><input id="sort_order_desc_radio" type="radio" name="sortOrder" value="DESC">&nbsp;<span onclick="document.getElementById(&quot;sort_order_desc_radio&quot;).checked = true" style="cursor: pointer; cursor: hand">Descending</span></div>
+
+            <div><input id="sort_order_asc_radio" type="radio" name="sortOrder" value="ASC" checked="">&nbsp;<span onclick="document.getElementById(&quot;sort_order_asc_radio&quot;).checked = true" style="cursor: pointer; cursor: hand">Ascending</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    SUGAR.savedViews.columnsMeta = {"NAME":{"width":"25%","label":"LBL_LIST_SUBJECT","link":true,"default":true,"sortable":false},"STATUS":{"width":"10%","label":"LBL_LIST_STATUS","default":true,"sortable":false},"DATE_OF_INCIDENT_C":{"type":"date","default":true,"label":"LBL_DATE_OF_INCIDENT","width":"10%","sortable":false},"TOTAL_CASE_LENGTH_C":{"type":"int","default":true,"label":"LBL_TOTAL_CASE_LENGTH","width":"10%","sortable":false},"ASSIGNED_USER_NAME":{"width":"10%","label":"LBL_ASSIGNED_TO_NAME","module":"Employees","id":"ASSIGNED_USER_ID","default":true,"link":false,"sortable":false},"MDP_ESTIMATED_CASE_VALUE_C":{"type":"currency","default":true,"label":"LBL_MDP_ESTIMATED_CASE_VALUE","currency_format":true,"width":"10%","ext2":"Cases","sortable":false}};
+    columnsMeta = {"NAME":{"width":"25%","label":"LBL_LIST_SUBJECT","link":true,"default":true,"sortable":false},"STATUS":{"width":"10%","label":"LBL_LIST_STATUS","default":true,"sortable":false},"DATE_OF_INCIDENT_C":{"type":"date","default":true,"label":"LBL_DATE_OF_INCIDENT","width":"10%","sortable":false},"TOTAL_CASE_LENGTH_C":{"type":"int","default":true,"label":"LBL_TOTAL_CASE_LENGTH","width":"10%","sortable":false},"ASSIGNED_USER_NAME":{"width":"10%","label":"LBL_ASSIGNED_TO_NAME","module":"Employees","id":"ASSIGNED_USER_ID","default":true,"link":false,"sortable":false},"MDP_ESTIMATED_CASE_VALUE_C":{"type":"currency","default":true,"label":"LBL_MDP_ESTIMATED_CASE_VALUE","currency_format":true,"width":"10%","ext2":"Cases","sortable":false}};
+    saved_search_select = "";
+    selectedSortOrder = "ASC";
+    selectedOrderBy = "NAME";
+
+
+
+    //this populates the label that shows the name of the current saved view
+    //The label is located under the update/delete buttons
+    function fillInLabels() {
+        //this javascript runs and populates values in savedSearchForm.tpl
+        x = document.getElementById('saved_search_select');
+        if ((typeof(x) != 'undefined' && x != null) && x.selectedIndex != 0) {
+            curr_search_name = document.getElementById('curr_search_name');
+            curr_search_name.innerHTML = '';
+            curr_search_name.appendChild(document.createTextNode('"' + x.options[x.selectedIndex].text + '"'));
+            document.getElementById('ss_update').disabled = false;
+            document.getElementById('ss_delete').disabled = false;
+            $('.hideUnusedSavedSearchElements').show();
+        } else {
+            document.getElementById('ss_update').disabled = true;
+            document.getElementById('ss_delete').disabled = true;
+            document.getElementById('curr_search_name').innerHTML = '';
+            $('.hideUnusedSavedSearchElements').hide();
+        }
+    }
+    //call scripts that need to get run onload of this form.  This function is called when image
+    //to collapse/show subpanels is loaded
+    function loadSSL_Scripts() {
+        //this will fill in the name of the current module, and enable/disable update/delete buttons
+        fillInLabels();
+        //this populates the order by dropdown, and activates the chooser widget.
+        SUGAR.savedViews.handleForm();
+    }
+
+
+</script>
+
+                </div>
+            </div>
+        </div>
+
+            <div>
+            <div class="submitButtonsAdvanced">
+                <input tabindex="2" title="Search" onclick="SUGAR.savedViews.setChooser()" class="button" type="submit" name="button" value="Search" id="search_form_submit_advanced">&nbsp;
+                <input tabindex="2" title="Clear" onclick="SUGAR.searchForm.clear_form(this.form); if(document.getElementById(&quot;saved_search_select&quot;)){document.getElementById(&quot;saved_search_select&quot;).options[0].selected=true;} return false;" class="button" type="button" name="clear" id="search_form_clear_advanced" value="Clear">
+                                                <div style="display: none">
+                                        <a id="basic_search_link" href="javascript:void(0)" accesskey="8">Quick Filter</a>
+        <span class="white-space">
+            &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;<b>My Filters</b>&nbsp;
+
+<select style="width: auto !important; min-width: 150px;" name="saved_search_select" id="saved_search_select" onchange="SUGAR.savedViews.shortcut_select(this, &quot;Cases&quot;);">
+
+<option value="_none">--None--</option>
+</select>
+<script>
+
+    //if the function exists, call the function that will populate the searchform
+    //labels based on the value of the saved search dropdown
+    if(typeof(fillInLabels)=='function'){
+        fillInLabels();
+    }
+
+</script>
+
+             <span id="go_btn_span" style="display:none"><input tabindex="2" title="go_select" id="go_select" onclick="SUGAR.searchForm.clear_form(this.form);" class="button" type="button" name="go_select" value=" Go "></span>
+        </span>
+                                    </div>
+                            </div>
+            <div class="help">
+                            </div>
+        </div>
+    </div>
+
+<script>
+
+    if (typeof(loadSSL_Scripts) == 'function') {
+        loadSSL_Scripts();
+    }
+
+</script>
+<script>
+
+    $(document).ready(function () {
+        $('#basic_search_link').one("click", function () {
+            //alert( "This will be displayed only once." );
+            SUGAR.searchForm.searchFormSelect('Cases|basic_search', 'Cases|advanced_search');
+        });
+    });
+
+</script>
+<script language="javascript">if(typeof sqs_objects == 'undefined'){var sqs_objects = new Array;}sqs_objects['search_form_modified_by_name_advanced']={"form":"search_form","method":"get_user_array","field_list":["user_name","id"],"populate_list":["modified_by_name_advanced","modified_user_id_advanced"],"required_list":["modified_user_id"],"conditions":[{"name":"user_name","op":"like_custom","end":"%","value":""}],"limit":"30","no_match_text":"No Match"};sqs_objects['search_form_created_by_name_advanced']={"form":"search_form","method":"get_user_array","field_list":["user_name","id"],"populate_list":["created_by_name_advanced","created_by_advanced"],"required_list":["created_by"],"conditions":[{"name":"user_name","op":"like_custom","end":"%","value":""}],"limit":"30","no_match_text":"No Match"};sqs_objects['search_form_assigned_user_name_advanced']={"form":"search_form","method":"get_user_array","field_list":["user_name","id"],"populate_list":["assigned_user_name_advanced","assigned_user_id_advanced"],"required_list":["assigned_user_id"],"conditions":[{"name":"user_name","op":"like_custom","end":"%","value":""}],"limit":"30","no_match_text":"No Match"};sqs_objects['search_form_account_name_advanced']={"form":"search_form","method":"query","modules":["Accounts"],"group":"or","field_list":["name","id"],"populate_list":["search_form_account_name_advanced","account_id_advanced"],"conditions":[{"name":"name","op":"like_custom","end":"%","value":""}],"required_list":["account_id"],"order":"name","limit":"30","no_match_text":"No Match"};sqs_objects['search_form_contact_created_by_name_advanced']={"form":"search_form","method":"get_contact_array","modules":["Contacts"],"field_list":["salutation","first_name","last_name","id"],"populate_list":["contact_created_by_name_advanced","contact_created_by_id_advanced","contact_created_by_id_advanced","contact_created_by_id_advanced"],"required_list":["contact_created_by_id"],"group":"or","conditions":[{"name":"first_name","op":"like_custom","end":"%","value":""},{"name":"last_name","op":"like_custom","end":"%","value":""}],"order":"last_name","limit":"30","no_match_text":"No Match"};sqs_objects['search_form_def_client_insurance_cases_name_advanced']={"form":"search_form","method":"query","modules":["DEF_Client_Insurance"],"group":"or","field_list":["name","id"],"populate_list":["def_client_insurance_cases_name_advanced","def_client_insurance_casesdef_client_insurance_ida_advanced"],"required_list":["parent_id"],"conditions":[{"name":"name","op":"like_custom","end":"%","value":""}],"order":"name","limit":"30","no_match_text":"No Match"};</script></div>
+                <div id="Casessaved_viewsSearchForm" style="display: none;"></div>
+
+</form>
+
+<script>
+function toggleInlineSearch()
+{
+    if (document.getElementById('inlineSavedSearch').style.display == 'none'){
+        document.getElementById('showSSDIV').value = 'yes'
+        document.getElementById('inlineSavedSearch').style.display = '';
+
+        document.getElementById('up_down_img').src='themes/default/images/basic_search.gif?v=-X3bS6lOB-EZRqhczixknw';
+        document.getElementById('up_down_img').setAttribute('alt',"Hide Options");
+
+    }else{
+
+        document.getElementById('up_down_img').src='themes/default/images/advanced_search.gif?v=-X3bS6lOB-EZRqhczixknw';
+        document.getElementById('up_down_img').setAttribute('alt',"Show Options");
+
+        document.getElementById('showSSDIV').value = 'no';
+        document.getElementById('inlineSavedSearch').style.display = 'none';
+    }
+}
+</script>
+
+
+    </div>
+</div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<script>
+
+    var listViewSearchIcon = {
+
+        searchInfo: [],
+
+        selectedSavedSearch: '',
+
+        infoInit: function () {
+
+            $(function () {
+                // load qtip
+                if (typeof $.qtip == 'undefined') {
+                    $.getScript('include/javascript/qtip/jquery.qtip.min.js');
+                    $("<link/>", {
+                        rel: "stylesheet",
+                        type: "text/css",
+                        href: "include/javascript/qtip/jquery.qtip.min.css"
+                    }).appendTo("head");
+                }
+
+                // add qtip to search filter icon
+                var qtipLoadInterval = setInterval(function () {
+                    if (typeof $.qtip != 'undefined') {
+                        clearInterval(qtipLoadInterval);
+
+                        var qtipNeeded = false;
+                        var qtipContent = '<table>';
+                        for (var key in listViewSearchIcon.searchInfo) {
+                            qtipContent += '<tr>';
+                            qtipContent += '<td><b>' + key + '</b>&nbsp;</td>';
+                            qtipContent += '<td>' + listViewSearchIcon.searchInfo[key] + '</td>';
+                            qtipContent += '</tr>';
+                            qtipNeeded = true;
+                        }
+                        qtipContent += '</table>';
+
+                        if (qtipNeeded) {
+                            $('.searchAppliedAlertLink').qtip({
+                                content: qtipContent
+                            });
+                            $('.searchAppliedAlertLink').removeClass('hidden');
+                        }
+                    }
+                }, 100);
+
+                var switchSearchTabLatestActiveInterval = setInterval(function () {
+                    listViewSearchIcon.switchSearchTabLatestActive();
+                }, 100);
+
+            });
+
+        },
+
+        onOpen: function () {
+        },
+
+        // private
+        latestSearchDialogType: 'advanced',
+
+        // private
+        setLatestSearchDialogType: function (dialogType) {
+            $('input[name="selectedSearchTab"]').val(dialogType);
+            this.latestSearchDialogType = dialogType;
+        },
+
+        // public
+        getLatestSearchDialogType: function () {
+            return this.latestSearchDialogType;
+        },
+
+        toggleSearchDialog: function (dialogType) {
+            if (dialogType == 'latest') {
+                if (this.selectedSavedSearch != '') {
+                    dialogType = 'advanced';
+                }
+                else {
+                    dialogType = this.getLatestSearchDialogType();
+                }
+            }
+            this.setLatestSearchDialogType(dialogType);
+            SUGAR.searchForm.searchFormSelect('Cases|' + dialogType + '_search', 'Cases|' + (dialogType == 'advanced' ? 'basic' : 'advanced') + '_search');
+        },
+
+        switchSearchTabLatestActive: function () {
+            $('.searchTabHandler').removeClass('active');
+            $('.searchTabHandler.' + this.getLatestSearchDialogType()).addClass('active');
+
+            $('.searchTabHeader').removeClass('active');
+            $('.searchTabHeader.' + this.getLatestSearchDialogType()).addClass('active');
+        }
+
+    };
+
+    listViewSearchIcon.infoInit();
+
+
+</script>
+
+
+<form action="index.php" method="post" name="displayMassUpdate" id="displayMassUpdate" class="ng-pristine ng-valid">
+<input type="hidden" name="mu" value="false">
+<input type="hidden" name="module" value="Cases"><input type="hidden" name="action" value="index"><input type="hidden" name="displayColumns" value="NAME|STATUS|DATE_OF_INCIDENT_C|MDP_ESTIMATED_CASE_VALUE_C|ASSIGNED_USER_NAME|TOTAL_CASE_LENGTH_C"><input type="hidden" name="query" value="true"><input type="hidden" name="use_stored_query" value="true"><input type="hidden" name="update_stored_query" value="true"><input type="hidden" name="update_stored_query_key" value="displayColumns"><input type="hidden" name="last_search_tab" value="basic"><input type="hidden" name="save_columns_order" value="true"><input type="hidden" name="orderBy" value="NAME"><input type="hidden" name="sortOrder" value="ASC"><input type="hidden" name="searchFormTab" value="advanced_search"></form>
+<form action="index.php" method="post" name="MassUpdate" id="MassUpdate" onsubmit="return check_form('MassUpdate');" class="ng-pristine ng-valid">
+<input type="hidden" name="return_action" value="index">
+<input type="hidden" name="return_module" value="Cases">
+<input type="hidden" name="massupdate" value="true">
+<input type="hidden" name="delete" value="false">
+<input type="hidden" name="merge" value="false">
+<input type="hidden" name="current_query_by_page" value="{&quot;module&quot;:&quot;Cases&quot;,&quot;action&quot;:&quot;index&quot;,&quot;orderBy&quot;:&quot;NAME&quot;,&quot;sortOrder&quot;:&quot;ASC&quot;,&quot;displayColumns&quot;:&quot;NAME|STATUS|DATE_OF_INCIDENT_C|MDP_ESTIMATED_CASE_VALUE_C|ASSIGNED_USER_NAME|TOTAL_CASE_LENGTH_C&quot;,&quot;query&quot;:&quot;true&quot;,&quot;use_stored_query&quot;:&quot;true&quot;,&quot;update_stored_query&quot;:&quot;true&quot;,&quot;update_stored_query_key&quot;:&quot;displayColumns&quot;,&quot;last_search_tab&quot;:&quot;basic&quot;,&quot;save_columns_order&quot;:&quot;true&quot;,&quot;searchFormTab&quot;:&quot;advanced_search&quot;}">
+<input type="hidden" name="module" value="Cases">
+<input type="hidden" name="action" value="MassUpdate">
+<input type="hidden" name="lvso" value="">
+<input type="hidden" name="Cases2_CASE_ORDER_BY" value="">
+
+    <div id="columnsFilterDialog" class="modal fade modal-columns-filter" tabindex="-1" role="dialog">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Choose columns</h4>
+                </div>
+                <div class="modal-body" id="columnsFilterList">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn button purple btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="columnsFilter.onSaveClick();" class="button red">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <div id="chooserTemplate" class="hidden">
+        <div class="chooserContent">
+            <h1>Displayed</h1>
+            <ul class="chooserList green"></ul>
+            <div id="error-displayed-columns" class="error"></div>
+            <h1>Hidden</h1>
+            <ul class="chooserList red"></ul>
+        </div>
+    </div>
+
+    <script>
+
+        // TODO add it to sListView
+        if (typeof columnsFilter == 'undefined') {
+
+            var columnsFilter = {
+
+                onOpen: function () {
+                    this.loadColumnsSettings();
+                },
+
+                showContents: function (contents) {
+                    $('#columnsFilterList').html(contents);
+                },
+
+                showPreload: function () {
+                    this.showContents('<p class="preloading"></p>');
+                },
+
+                loadColumnsSettings: function () {
+                    var _this = this;
+                    this.showPreload();
+
+                    if (typeof module_sugar_grp1 != 'undefined' && module_sugar_grp1) {
+
+                        var url = 'index.php?module=' + module_sugar_grp1 + '&action=index&search_form_only=true&to_pdf=true&search_form_view=advanced_search&columnsFilter=true';
+
+                        var cObj = YAHOO.util.Connect.asyncRequest('GET', url, {
+                            success: function (e) {
+                                _this.showContents(_this.getDragDropChooserHTML(JSON.parse($('<div></div>').html(e.responseText).find('#responseData').html())));
+                                _this.initDragDropChooser();
+                            }, failure: function () {
+                                _this.showContents('ERR_COMMUNICATION_ERROR');
+                            }
+                        });
+                    }
+                    else {
+                        _this.showContents('ERR_NO_MODULE_SELECTED');
+                    }
+
+                },
+
+                getDragDropChooserHTML: function (chooserData) {
+
+                    $('#chooserTemplate .chooserList.green').html('');
+                    $.each(chooserData.args.values_array[0], function (key, value) {
+                        $('#chooserTemplate .chooserList.green').append('<li data-key="' + key + '">' + value + '</li>');
+                    });
+
+                    $('#chooserTemplate .chooserList.red').html('');
+                    $.each(chooserData.args.values_array[1], function (key, value) {
+                        $('#chooserTemplate .chooserList.red').append('<li data-key="' + key + '">' + value + '</li>');
+                    });
+
+                    return $('#chooserTemplate').html();
+                },
+
+                initDragDropChooser: function () {
+                    var _this = this;
+                    $("#columnsFilterList .chooserContent .chooserList.green").sortable({
+                        connectWith: "#columnsFilterList .chooserContent .chooserList.red",
+                        stop: function () {
+                            _this.isValid();
+                        }
+                    });
+                    $("#columnsFilterList .chooserContent .chooserList.green").disableSelection();
+
+                    $("#columnsFilterList .chooserContent .chooserList.red").sortable({
+                        connectWith: "#columnsFilterList .chooserContent .chooserList.green",
+                        stop: function () {
+                            _this.isValid();
+                        }
+                    });
+                    $("#columnsFilterList .chooserContent .chooserList.red").disableSelection();
+
+                },
+
+                onSaveClick: function () {
+                    if (this.isValid()) {
+                        this.save();
+                    }
+                },
+
+                // validation (return true if valid, otherwise show error(s) and return false)
+                isValid: function () {
+                    // clear error message
+                    $('#error-displayed-columns').html('');
+                    // check validation for empty list
+                    var v = $('#columnsFilterList > div > ul.chooserList.green.ui-sortable li').length > 0;
+                    if (!v) {
+                        // show error
+                        $('#error-displayed-columns').html('At least, one element required');
+                        // scroll to error message
+                        $('#columnsFilterDialog').animate({
+                            scrollTop: $("#error-displayed-columns").offset().top - 100
+                        });
+                    }
+                    // return validation result
+                    return v;
+                },
+
+                // send it to server to save user preferences (refresh the page to show changes)
+                save: function () {
+
+                    // TODO : show loading message...
+
+                    // make query columns list
+                    var cols = [];
+                    $('#columnsFilterList > div > ul.chooserList.green.ui-sortable > li').each(function (i, e) {
+                        cols.push($(e).attr('data-key'));
+                    });
+
+                    $.post($('#search_form').attr('action'), {
+                        displayColumns: cols.join('|'),
+                        query: 'true',
+                        use_stored_query: 'true',
+            update_stored_query: 'true',
+                        update_stored_query_key: 'displayColumns',
+                        last_search_tab: listViewSearchIcon.getLatestSearchDialogType(),
+                        save_columns_order: 'true'
+                    }, function () {
+                        //close form and refresh page after save
+                        $('#columnsFilterDialog > div > div > div.modal-footer > button.btn.button.purple.btn-default').click();
+                        if ($('#search_form').length > 0) {
+                            document.location.href = $('#search_form').attr('action');
+                        } else {
+                            if (typeof module_sugar_grp1 != 'undefined' && module_sugar_grp1) {
+                                document.location.href = 'index.php?module=' + module_sugar_grp1 + '&action=index';
+                            } else {
+                                document.location.href = document.location.href;
+                            }
+                        }
+                    });
+
+                }
+
+            };
+
+        }
+
+    </script>
+
+
+    <script type="text/javascript" src="include/javascript/popup_helper.js?v=-X3bS6lOB-EZRqhczixknw"></script>
+<script type="text/javascript" src="custom/include/javascript/jquery.dataTables.min.js"></script>
+<link href="custom/include/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css">
+
+
+
+<script>
+
+    $(document).ready(function(){
+        $("ul.clickMenu").each(function(index, node){
+            $(node).sugarActionMenu();
+        });
+
+        $('.selectActionsDisabled').children().each(function(index) {
+            $(this).attr('onclick','').unbind('click');
+        });
+
+        var selectedTopValue = $("#selectCountTop").attr("value");
+        if(typeof(selectedTopValue) != "undefined" && selectedTopValue != "0"){
+            sugarListView.prototype.toggleSelected();
+        }
+    });
+
+</script>
+
+<script>YAHOO.util.Event.addListener(window, "load", sListView.check_boxes);</script>
+<textarea style="display: none" name="uid"></textarea>
+<input type="hidden" name="select_entire_list" value="0">
+<input type="hidden" name="Cases2_CASE_offset" value="0">
+<input type="hidden" name="show_plus" value="">
+
+    <div class="list-view-rounded-corners">
+        <div id="tab_cases_wrapper" class="dataTables_wrapper no-footer"><div id="tab_cases_filter" class="dataTables_filter"><label>Search:<input type="search" class="" placeholder="" aria-controls="tab_cases"></label></div><table id="tab_cases" cellpadding="0" cellspacing="0" border="0" class="list view table-responsive dataTable no-footer" role="grid">
+    <thead>
+
+        <tr height="20" role="row"><th class="td_alt sorting" tabindex="0" aria-controls="tab_cases" rowspan="1" colspan="1" aria-sort="descending" aria-label="&amp;nbsp;: activate to sort column ascending" style="width: 23px;">&nbsp;</th><th class="td_alt quick_view_links sorting" tabindex="0" aria-controls="tab_cases" rowspan="1" colspan="1" aria-label="&amp;nbsp;: activate to sort column ascending" style="width: 23px;">&nbsp;</th><th scope="col" data-toggle="true" class="sorting" tabindex="0" aria-controls="tab_cases" rowspan="1" colspan="1" aria-label="
+
+                                                                                  Case Name
+
+                    : activate to sort column ascending" style="width: 193px;">
+                                        <div>
+                                                                                  Case Name
+                                                                            </div>
+                    </th><th scope="col" data-breakpoints="xs sm" class="hidden-xs sorting" tabindex="0" aria-controls="tab_cases" rowspan="1" colspan="1" aria-label="
+
+                                                                                  Status
+
+                    : activate to sort column ascending" style="width: 77px;"><select multiple="" id="status" class="dt-search-select"><option value="">(No filter applied)</option><option value="Pre-Suit 1 Investigation">Pre-Suit 1 Investigation</option><option value="Medical Malpractice Pre-Suit">Medical Malpractice Pre-Suit</option><option value="Pre-Suit 2 Treating">Pre-Suit 2 Treating</option><option value="Pre-Suit 3 Order all records and prepare a Formal Demand Letter">Pre-Suit 3 Order all records and prepare a Formal Demand Letter</option><option value="Pre-Suit 4 Prepare a quick Go Fish Demand Letter">Pre-Suit 4 Prepare a quick Go Fish Demand Letter</option><option value="Pre-Suit 5 Negotiations Period of 45 days with just one Liability carrier when there is no UM">Pre-Suit 5 Negotiations Period of 45 days with just one Liability carrier when there is no UM</option><option value="Pre-Suit 5.1 Negotiations Period of 45 days with Multiple Liability Carriers and no UM">Pre-Suit 5.1 Negotiations Period of 45 days with Multiple Liability Carriers and no UM</option><option value="Pre-Suit 5.2 Negotiations Period of 45 days with BI carrier but later there will be a UM demand">Pre-Suit 5.2 Negotiations Period of 45 days with BI carrier but later there will be a UM demand</option><option value="Pre-Suit 5.3 Negotiations Period of 65 days with UM carrier only">Pre-Suit 5.3 Negotiations Period of 65 days with UM carrier only</option><option value="Pre-Suit 5.4 45 day and 65 Day Negotiation Periods when we send a BI and UM at the same time">Pre-Suit 5.4 45 day and 65 Day Negotiation Periods when we send a BI and UM at the same time</option><option value="Pre-Suit 5.5 We extend the time to respond to our Offer to Settle for up to 30 more days">Pre-Suit 5.5 We extend the time to respond to our Offer to Settle for up to 30 more days</option><option value="Pre-Suit 6 Decision to File Suit">Pre-Suit 6 Decision to File Suit</option><option value="Pre-Suit 6.1 Attorney to talk to client">Pre-Suit 6.1 Attorney to talk to client</option><option value="Pre-Suit 6.2 Letter sent to client to fill out Pre-Suit Roggs">Pre-Suit 6.2 Letter sent to client to fill out Pre-Suit Roggs</option><option value="Pre-Suit 6.3 Waiting for Client to answer Pre-Suit Roggs">Pre-Suit 6.3 Waiting for Client to answer Pre-Suit Roggs</option><option value="Pre-Suit 6.4 Reminder to Answer Roggs or else take the last offer">Pre-Suit 6.4 Reminder to Answer Roggs or else take the last offer</option><option value="Pre-Suit 6.5 Answer Roggs soon or we will close your file">Pre-Suit 6.5 Answer Roggs soon or we will close your file</option><option value="Pre-Suit 6.6 Roggs are answered and Lawyer to prepare Complaint">Pre-Suit 6.6 Roggs are answered and Lawyer to prepare Complaint</option><option value="Lit 1 Obtaining Service upon All Defendants">Lit 1 Obtaining Service upon All Defendants</option><option value="Lit 2 Every Defendant has Answered">Lit 2 Every Defendant has Answered</option><option value="Lit 3 Discovery Phase for Punitive Damages">Lit 3 Discovery Phase for Punitive Damages</option><option value="Lit 4 Waiting for a Trial Date to be assigned">Lit 4 Waiting for a Trial Date to be assigned</option><option value="Lit 5 We have a Trial Date">Lit 5 We have a Trial Date</option><option value="Lit 6 Discovery Cut Off">Lit 6 Discovery Cut Off</option><option value="Lit 7 Trial itself">Lit 7 Trial itself</option><option value="Lit 8 Post Trial Motions">Lit 8 Post Trial Motions</option><option value="Appeal Pending">Appeal Pending</option><option value="Referred Out">Referred Out</option><option value="Pending Reductions">Pending Reductions</option><option value="Pending Signed Closing">Pending Signed Closing</option></select>
+                                        <div>
+                                                                                  Status
+                                                                            </div>
+                    </th><th scope="col" data-breakpoints="xs sm" class="hidden-xs sorting" tabindex="0" aria-controls="tab_cases" rowspan="1" colspan="1" aria-label="
+
+                                                                                  Date of Incident
+
+                    : activate to sort column ascending" style="width: 162px;">
+                                        <div>
+                                                                                  Date of Incident
+                                                                            </div>
+                    </th><th scope="col" data-breakpoints="xs sm" class="hidden-xs sorting" tabindex="0" aria-controls="tab_cases" rowspan="1" colspan="1" aria-label="
+
+                                                                                  Total Case Length
+
+                    : activate to sort column ascending" style="width: 184px;">
+                                        <div>
+                                                                                  Total Case Length
+                                                                            </div>
+                    </th><th scope="col" data-breakpoints="xs sm" class="hidden-xs sorting" tabindex="0" aria-controls="tab_cases" rowspan="1" colspan="1" aria-label="
+
+                                                                                  Assigned Lawyer
+
+                    : activate to sort column ascending" style="width: 176px;"><select class="dt-search-select"><option value="">(No filter applied)</option><option value="Matthew D. Powell">Matthew D. Powell</option><option value="K. Mitch Espat">K. Mitch Espat</option><option value="Anita DiGiacomo">Anita DiGiacomo</option><option value="Marcia Sampson">Marcia Sampson</option><option value="Elizabeth Amaya">Elizabeth Amaya</option></select>
+                                        <div>
+                                                                                  Assigned Lawyer
+                                                                            </div>
+                    </th><th scope="col" data-breakpoints="md" class="hidden-xs hidden-sm sorting" tabindex="0" aria-controls="tab_cases" rowspan="1" colspan="1" aria-label="
+
+                                                                                  MDP Est Case Value
+
+                    : activate to sort column ascending" style="width: 203px;">
+                                        <div>
+                                                                                  MDP Est Case Value
+                                                                            </div>
+                    </th><th class="sorting" tabindex="0" aria-controls="tab_cases" rowspan="1" colspan="1" aria-label=": activate to sort column ascending" style="width: 18px;"></th></tr>
+
+
+
+    <tr id="pagination" class="pagination-unique" role="row"><td colspan="17" rowspan="1">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="paginationTable">
+                <tbody><tr>
+                    <td nowrap="nowrap" class="paginationActionButtons">
+
+                        <ul id="selectLinkTop" class="clickMenu selectmenu SugarActionMenu"><li class="sugar_action_button"><label class="glyphicon bootstrap-checkbox initialized-checkbox glyphicon-unchecked"></label><input title="Select all" type="checkbox" class="bootstrap-checkbox-hidden checkbox massall" name="massall" id="massall_top" value="" onclick="sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, this.checked);" style="display: none;"><div class="selectedRecords label hidden">Selected: </div><div class="selectedRecords value hidden">0</div>
+<input type="hidden" id="selectCountTop" name="selectCount[]" value="0">
+
+<script>
+
+    $(document).ready(function () {
+        function update_selectedRecordsTopValue() {
+            var selectedNum = sugarListView.get_num_selected();
+            if(!selectedNum) {
+                $('.selectedRecords').addClass('hidden');
+            }
+            else {
+                $('.selectedRecords').removeClass('hidden');
+            }
+            $('.selectedRecords.value').html(selectedNum);
+        }
+        setInterval(update_selectedRecordsTopValue, 100);
+    });
+
+</script><a id="select_link" href="javascript: void(0);"></a><ul id="" class="subnav"><li><a name="thispage" id="button_select_this_page_top" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="if (document.MassUpdate.select_entire_list.value==1){document.MassUpdate.select_entire_list.value=0;sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, true, 2)}else {sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, true)};" href="#">Select&nbsp;This Page&nbsp;(2)&lrm;</a></li><li><a name="selectall" id="button_select_all_top" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sListView.check_entire_list(document.MassUpdate, &quot;mass[]&quot;,true,2);" href="#">Select&nbsp;All&nbsp;(2)&lrm;</a></li><li><a name="deselect" id="button_deselect_top" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sListView.clear_all(document.MassUpdate, &quot;mass[]&quot;, false);" href="#">Deselect&nbsp;All</a></li></ul><span></span></li></ul>
+
+
+                        <ul id="actionLinkTop" class="clickMenu selectActions fancymenu SugarActionMenu" name="selectActions"><li class="sugar_action_button"><a href="javascript:void(0)" class="parent-dropdown-handler" id="delete_listview_top" onclick="return false;"><label class="selected-actions-label hidden-mobile">ACTION</label><label class="selected-actions-label hidden-desktop">BULK ACTION</label></a><ul id="" class="subnav"><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="massupdate_listview_top" onclick="document.getElementById('massupdate_form').style.display = ''; var yLoc = YAHOO.util.Dom.getY('massupdate_form'); scroll(0,yLoc);">Mass&nbsp;Update</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="mergeduplicates_listview_top" onclick="if (sugarListView.get_checks_count()> 1) {sListView.send_form(true, &quot;MergeRecords&quot;, &quot;index.php&quot;, &quot;Please select at least 1 record to proceed.&quot;, &quot;Cases&quot;,&quot;&amp;return_module=Cases&amp;return_action=index&quot;);} else {alert(&quot;Please select at least 2 records to proceed.&quot;);return false;}">Merge</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="export_listview_top " onclick="return sListView.send_form(true, 'Cases', 'index.php?entryPoint=export','Please select at least 1 record to proceed.')">Export</a></li><li>      <a class="menuItem" style="width: 150px;" href="#" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sugarListView.get_checks();
+                document.MassUpdate.action.value='cases_list_view_report';
+                document.MassUpdate.submit();">Generate&nbsp;Report</a>
+                </li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="delete_listview_top" onclick="return sListView.send_mass_update('selected', 'Please select at least 1 record to proceed.', 1)">Delete</a></li></ul><span></span></li></ul>
+
+                        <div class="selectActionsDisabled" id="select_actions_disabled_top"><a href="javascript:void(0)" class="parent-dropdown-handler" onclick=""><label class="selected-actions-label hidden-mobile">ACTION</label><label class="selected-actions-label hidden-desktop">BULK ACTION</label></a><span class="ab" onclick=""></span></div>
+
+
+<ul class="clickMenu selectmenu searchLink SugarActionMenu listViewLinkButton listViewLinkButton_top">
+    <li class="sugar_action_button">
+        <a href="javascript:void(0)" class="glyphicon glyphicon-filter parent-dropdown-handler" onclick="listViewSearchIcon.toggleSearchDialog('latest'); $('#searchDialog .nav-tabs .active').removeClass('active'); $('#searchDialog .nav-tabs li').first().addClass('active'); $('#searchDialog').modal('toggle');"></a>
+    </li>
+</ul>
+<ul class="searchAppliedAlert hidden clickMenu selectmenu searchAppliedAlertLink SugarActionMenu listViewLinkButton listViewLinkButton_top">
+    <li class="sugar_action_button desktopOnly">
+        <a href="javascript:void(0)" class="glyphicon glyphicon-list-alt clearSearchIcon parent-dropdown-handler" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Cases');"></a>
+        <a href="javascript:void(0)" class="glyphicon glyphicon-remove" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Cases');">⨯</a>
+    </li>
+    <li class="sugar_action_button mobileOnly">
+        <a href="javascript:void(0)" class="glyphicon glyphicon-list-alt clearSearchIcon parent-dropdown-handler" onclick=""></a>
+        <a href="javascript:void(0)" class="glyphicon glyphicon-remove" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Cases');"></a>
+    </li>
+</ul>                                               <ul class="clickMenu selectmenu SugarActionMenu columnsFilterLink listViewLinkButton listViewLinkButton_top" onclick="columnsFilter.onOpen();">
+    <li class="sugar_action_button">
+        <a href="#" class="glyphicon glyphicon-th-list" data-toggle="modal" data-target=".modal-columns-filter"></a>
+    </li>
+</ul>
+                        &nbsp;
+                    </td>
+                    <td nowrap="nowrap" align="right" class="paginationChangeButtons" width="1%">
+                                                    <button type="button" id="listViewStartButton_top" name="listViewStartButton" title="Start" class="button" disabled="disabled"></button>
+                                                                            <button type="button" id="listViewPrevButton_top" name="listViewPrevButton" class="button" title="Previous" disabled="disabled"></button>
+                                            </td>
+                    <td nowrap="nowrap" width="1%" class="paginationActionButtons">
+                        <div class="pageNumbers">(1 - 2 of 2)</div>
+                    </td>
+                    <td nowrap="nowrap" align="right" class="paginationActionButtons" width="1%">
+                                                    <button type="button" id="listViewNextButton_top" name="listViewNextButton" class="button" title="Next" disabled="disabled"></button>
+                                                                            <button type="button" id="listViewEndButton_top" name="listViewEndButton" title="End" class="button" disabled="disabled"></button>
+                                            </td>
+                    <td nowrap="nowrap" width="4px" class="paginationActionButtons"></td>
+                </tr>
+            </tbody></table>
+        </td></tr>  </thead>
+    <tbody>
+<tr height="20" class="evenListRowS1 even" role="row" ng-repeat="x in data">
+                                <td class="sorting_1">
+                                        <input title="Select this row" onclick="sListView.check_item(this, document.MassUpdate)" type="checkbox" name="mass[]" value="c769a25d-05ea-8749-7fad-5d441441727d">
+                                </td>
+                                                                                <td>
+
+                        <a title="Edit" id="edit-c769a25d-05ea-8749-7fad-5d441441727d" href="index.php?module=Cases&amp;offset=2&amp;stamp=1564758907098205900&amp;return_module=Cases&amp;action=EditView&amp;record=c769a25d-05ea-8749-7fad-5d441441727d">
+                                                        <img src="themes/SuiteP/images/edit_inline.gif?v=-X3bS6lOB-EZRqhczixknw" border="0" alt="Edit"><!-- </a> -->
+                                    </a></td>
+
+
+
+                    <td scope="row" align="left" valign="top" type="name" field="name" class=" "><b><a href="index.php?module=Cases&amp;offset=2&amp;stamp=1564758907098205900&amp;return_module=Cases&amp;action=DetailView&amp;record=c769a25d-05ea-8749-7fad-5d441441727d">
+{{x.NAME}}
+</a></b></td>
+
+
+
+                    <td align="left" valign="top" type="dynamicenum" field="status" class="hidden-xs inlineEdit"> {{x.STATUS}}</td>
+
+
+
+                    <td align="left" valign="top" type="date" field="date_of_incident_c" class="hidden-xs inlineEdit">
+{{x.DATE_OF_INCIDENT_C}}
+</td>
+
+
+
+                    <td align="left" valign="top" type="int" field="total_case_length_c" class="hidden-xs inlineEdit">
+
+&nbsp;</td>
+
+
+
+                    <td align="left" valign="top" type="relate" field="assigned_user_name" class="hidden-xs inlineEdit">
+{{x.ASSIGNED_USER_NAME}}
+</td>
+
+
+
+                    <td align="left" valign="top" type="currency" field="mdp_estimated_case_value_c" class="hidden-xs hidden-sm inlineEdit"><a href="index.php?module=Users&amp;offset=2&amp;stamp=1564758907098205900&amp;return_module=Users&amp;action=DetailView&amp;record=1">
+&nbsp;</a></td>
+
+
+                                <td align="right"><span id="adspan_c769a25d-05ea-8749-7fad-5d441441727d" onclick="lvg_dtails('c769a25d-05ea-8749-7fad-5d441441727d')" style="position: relative;"><!--not_in_theme!--><img vertical-align="middle" class="info" border="0" alt="Additional Details" src="themes/SuiteP/images/info_inline.gif?v=-X3bS6lOB-EZRqhczixknw"></span></td>
+                </tr></tbody>
+
+
+
+
+    <tbody><tr id="pagination" class="pagination-unique pagination-bottom" role="presentation">
+        <td colspan="17">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%" class="paginationTable">
+                <tbody><tr>
+                    <td nowrap="nowrap" class="paginationActionButtons">
+
+                        <ul id="selectLinkBottom" class="clickMenu selectmenu SugarActionMenu"><li class="sugar_action_button"><label class="glyphicon bootstrap-checkbox initialized-checkbox glyphicon-unchecked"></label><input title="Select all" type="checkbox" class="bootstrap-checkbox-hidden checkbox massall" name="massall" id="massall_bottom" value="" onclick="sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, this.checked);" style="display: none;"><div class="selectedRecords label hidden">Selected: </div><div class="selectedRecords value hidden">0</div>
+<input type="hidden" id="selectCountTop" name="selectCount[]" value="0">
+
+<script>
+
+    $(document).ready(function () {
+        function update_selectedRecordsTopValue() {
+            var selectedNum = sugarListView.get_num_selected();
+            if(!selectedNum) {
+                $('.selectedRecords').addClass('hidden');
+            }
+            else {
+                $('.selectedRecords').removeClass('hidden');
+            }
+            $('.selectedRecords.value').html(selectedNum);
+        }
+        setInterval(update_selectedRecordsTopValue, 100);
+    });
+
+</script><a id="select_link" href="javascript: void(0);"></a><ul id="" class="subnav"><li><a name="thispage" id="button_select_this_page_bottom" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="if (document.MassUpdate.select_entire_list.value==1){document.MassUpdate.select_entire_list.value=0;sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, true, 2)}else {sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, true)};" href="#">Select&nbsp;This Page&nbsp;(2)&lrm;</a></li><li><a name="selectall" id="button_select_all_bottom" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sListView.check_entire_list(document.MassUpdate, &quot;mass[]&quot;,true,2);" href="#">Select&nbsp;All&nbsp;(2)&lrm;</a></li><li><a name="deselect" id="button_deselect_bottom" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sListView.clear_all(document.MassUpdate, &quot;mass[]&quot;, false);" href="#">Deselect&nbsp;All</a></li></ul><span></span></li></ul>
+
+
+                        <ul id="actionLinkBottom" class="clickMenu selectActions fancymenu SugarActionMenu" name="selectActions"><li class="sugar_action_button"><a href="javascript:void(0)" class="parent-dropdown-handler" id="delete_listview_bottom" onclick="return false;"><label class="selected-actions-label hidden-mobile">ACTION</label><label class="selected-actions-label hidden-desktop">BULK ACTION</label></a><ul id="" class="subnav"><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="massupdate_listview_bottom" onclick="document.getElementById('massupdate_form').style.display = ''; var yLoc = YAHOO.util.Dom.getY('massupdate_form'); scroll(0,yLoc);">Mass&nbsp;Update</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="mergeduplicates_listview_bottom" onclick="if (sugarListView.get_checks_count()> 1) {sListView.send_form(true, &quot;MergeRecords&quot;, &quot;index.php&quot;, &quot;Please select at least 1 record to proceed.&quot;, &quot;Cases&quot;,&quot;&amp;return_module=Cases&amp;return_action=index&quot;);} else {alert(&quot;Please select at least 2 records to proceed.&quot;);return false;}">Merge</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="export_listview_bottom " onclick="return sListView.send_form(true, 'Cases', 'index.php?entryPoint=export','Please select at least 1 record to proceed.')">Export</a></li><li>       <a class="menuItem" style="width: 150px;" href="#" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sugarListView.get_checks();
+                document.MassUpdate.action.value='cases_list_view_report';
+                document.MassUpdate.submit();">Generate&nbsp;Report</a>
+                </li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="delete_listview_bottom" onclick="return sListView.send_mass_update('selected', 'Please select at least 1 record to proceed.', 1)">Delete</a></li></ul><span></span></li></ul>
+
+                        <div class="selectActionsDisabled" id="select_actions_disabled_bottom"><a href="javascript:void(0)" class="parent-dropdown-handler" onclick=""><label class="selected-actions-label hidden-mobile">ACTION</label><label class="selected-actions-label hidden-desktop">BULK ACTION</label></a><span class="ab" onclick=""></span></div>
+
+
+<ul class="clickMenu selectmenu searchLink SugarActionMenu listViewLinkButton listViewLinkButton_bottom">
+    <li class="sugar_action_button">
+        <a href="javascript:void(0)" class="glyphicon glyphicon-filter parent-dropdown-handler" onclick="listViewSearchIcon.toggleSearchDialog('latest'); $('#searchDialog .nav-tabs .active').removeClass('active'); $('#searchDialog .nav-tabs li').first().addClass('active'); $('#searchDialog').modal('toggle');"></a>
+    </li>
+</ul>
+<ul class="searchAppliedAlert hidden clickMenu selectmenu searchAppliedAlertLink SugarActionMenu listViewLinkButton listViewLinkButton_bottom">
+    <li class="sugar_action_button desktopOnly">
+        <a href="javascript:void(0)" class="glyphicon glyphicon-list-alt clearSearchIcon parent-dropdown-handler" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Cases');"></a>
+        <a href="javascript:void(0)" class="glyphicon glyphicon-remove" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Cases');">⨯</a>
+    </li>
+    <li class="sugar_action_button mobileOnly">
+        <a href="javascript:void(0)" class="glyphicon glyphicon-list-alt clearSearchIcon parent-dropdown-handler" onclick=""></a>
+        <a href="javascript:void(0)" class="glyphicon glyphicon-remove" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Cases');"></a>
+    </li>
+</ul>                                               <ul class="clickMenu selectmenu SugarActionMenu columnsFilterLink listViewLinkButton listViewLinkButton_bottom" onclick="columnsFilter.onOpen();">
+    <li class="sugar_action_button">
+        <a href="#" class="glyphicon glyphicon-th-list" data-toggle="modal" data-target=".modal-columns-filter"></a>
+    </li>
+</ul>
+                        &nbsp;
+                    </td>
+                    <td nowrap="nowrap" align="right" class="paginationChangeButtons" width="1%">
+                                                    <button type="button" id="listViewStartButton_bottom" name="listViewStartButton" title="Start" class="button" disabled="disabled"></button>
+                                                                            <button type="button" id="listViewPrevButton_bottom" name="listViewPrevButton" class="button" title="Previous" disabled="disabled"></button>
+                                            </td>
+                    <td nowrap="nowrap" width="1%" class="paginationActionButtons">
+                        <div class="pageNumbers">(1 - 2 of 2)</div>
+                    </td>
+                    <td nowrap="nowrap" align="right" class="paginationActionButtons" width="1%">
+                                                    <button type="button" id="listViewNextButton_bottom" name="listViewNextButton" class="button" title="Next" disabled="disabled"></button>
+                                                                            <button type="button" id="listViewEndButton_bottom" name="listViewEndButton" title="End" class="button" disabled="disabled"></button>
+                                            </td>
+                    <td nowrap="nowrap" width="4px" class="paginationActionButtons"></td>
+                </tr>
+            </tbody></table>
+        </td>
+    </tr>
+    </tbody></table></div></div>
+<script type="text/javascript">
+
+
+function lvg_nav(m,id,act,offset,t){
+    if(t.href.search(/#/) < 0){return;}
+    else{
+        if(act=='pte'){
+            act='ProjectTemplatesEditView';
+        }
+        else if(act=='d'){
+            act='DetailView';
+        }else if( act =='ReportsWizard'){
+            act = 'ReportsWizard';
+        }else{
+            act='EditView';
+        }
+
+        url = 'index.php?module='+m+'&offset=' + offset + '&stamp=1564758907098205900&return_module='+m+'&action='+act+'&record='+id;
+        t.href=url;
+
+    }
+}
+
+    function lvg_dtails(id){
+        return SUGAR.util.getAdditionalDetails( 'Cases',id, 'adspan_'+id);}
+</script>
+<script type="text/javascript" src="include/InlineEditing/inlineEditing.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function() {
+$('#tab_cases').DataTable( {
+        'order': [[ 0, 'DESC' ]],
+        'searching': true,
+        'paging':false,
+        'info':false,
+        'white-space': 'nowrap',
+        initComplete: function () {
+           this.api().columns().every( function () {
+                    $(this.header()).css('padding-bottom', 'bottom')
+                });
+                var case_status = {
+            'PreSuit_1' : 'Pre-Suit 1 Investigation',
+            'Med_Mal_PreSuit' : 'Medical Malpractice Pre-Suit',
+            'PreSuit_2' : 'Pre-Suit 2 Treating',
+            'PreSuit_3' : 'Pre-Suit 3 Order all records and prepare a Formal Demand Letter',
+            'PreSuit_4' : 'Pre-Suit 4 Prepare a quick Go Fish Demand Letter',
+            'PreSuit_5' : 'Pre-Suit 5 Negotiations Period of 45 days with just one Liability carrier when there is no UM',
+            'PreSuit_5.1' : 'Pre-Suit 5.1 Negotiations Period of 45 days with Multiple Liability Carriers and no UM',
+            'PreSuit_5.2' : 'Pre-Suit 5.2 Negotiations Period of 45 days with BI carrier but later there will be a UM demand',
+            'PreSuit_5.3' : 'Pre-Suit 5.3 Negotiations Period of 65 days with UM carrier only',
+            'PreSuit_5.4' : 'Pre-Suit 5.4 45 day and 65 Day Negotiation Periods when we send a BI and UM at the same time',
+            'PreSuit_5.5' : 'Pre-Suit 5.5 We extend the time to respond to our Offer to Settle for up to 30 more days',
+            'PreSuit_6' : 'Pre-Suit 6 Decision to File Suit',
+            'PreSuit_6.1' : 'Pre-Suit 6.1 Attorney to talk to client',
+            'PreSuit_6.2' : 'Pre-Suit 6.2 Letter sent to client to fill out Pre-Suit Roggs',
+            'PreSuit_6.3' : 'Pre-Suit 6.3 Waiting for Client to answer Pre-Suit Roggs',
+            'PreSuit_6.4' : 'Pre-Suit 6.4 Reminder to Answer Roggs or else take the last offer',
+            'PreSuit_6.5' : 'Pre-Suit 6.5 Answer Roggs soon or we will close your file',
+            'PreSuit_6.6' : 'Pre-Suit 6.6 Roggs are answered and Lawyer to prepare Complaint',
+            'Lit_1' : 'Lit 1 Obtaining Service upon All Defendants',
+            'Lit_2' : 'Lit 2 Every Defendant has Answered',
+            'Lit_3' : 'Lit 3 Discovery Phase for Punitive Damages',
+            'Lit_4' : 'Lit 4 Waiting for a Trial Date to be assigned',
+            'Lit_5' : 'Lit 5 We have a Trial Date',
+            'Lit_6' : 'Lit 6 Discovery Cut Off',
+            'Lit_7' : 'Lit 7 Trial itself',
+            'Lit_8' : 'Lit 8 Post Trial Motions',
+            'Appeal_Pending' : 'Appeal Pending',
+            'Referred_Out' : 'Referred Out',
+            'Pending_Reductions' : 'Pending Reductions',
+            'Pending_Signed_Closing' : 'Pending Signed Closing',
+            };
+                this.api().columns([3]).every( function () {
+                    var column = this;
+                    var select = $('<select multiple id = "status" class="dt-search-select"><option value="">(No filter applied)</option></select>')
+                        .prependTo( $(column.header()));
+
+
+                    $.each(case_status, function( index, value ) {
+                            select.append( '<option value="'+ value +'">'+ value +'</option>' )
+                        });
+
+                          $('#status').on('change', function(){
+                                var search = [];
+
+                              $.each($('#status option:selected'), function(){
+                                    search.push($(this).val());
+                              });
+
+                              search = search.join('|');
+                              column.search(search, true, false).draw();
+                            });
+                });
+
+                this.api().columns([6]).every( function () {
+                    var column = this;
+                    var select = $('<select class="dt-search-select"><option value="">(No filter applied)</option></select>')
+                        .prependTo( $(column.header()))
+                        .on( 'change', function () {
+                            var val = $.fn.dataTable.util.escapeRegex(
+                                $(this).val()
+                            );
+                            column
+                                .search( val ? '^'+val+'$' : '', true, false )
+                                .draw();
+                        });
+                     var users = ["Matthew D. Powell", "K. Mitch Espat", "Anita DiGiacomo", "Marcia Sampson", "Elizabeth Amaya"];
+                        $.each(users, function( index, value ) {
+                            select.append( '<option value="'+ value +'">'+ value +'</option>' )
+                        });
+                });
+        }
+    } );
+    } );
+
+</script>
+
+<style>
+#tab_cases_filter{
+float:left;
+}
+
+</style><div id="massupdate_form" style="display:none;"><table width="100%" cellpadding="0" cellspacing="0" border="0" class="formHeader h3Row"><tbody><tr><td nowrap=""><h3><span>Mass Update</span></h3></td></tr></tbody></table><div id="mass_update_div"><table cellpadding="0" cellspacing="1" border="0" width="100%" class="edit view" id="mass_update_table"><tbody><tr>       <td width="15%" scope="row">Assigned Lawyer</td>
+        <td><input class="sqsEnabled yui-ac-input" autocomplete="off" id="mass_assigned_user_name" name="assigned_user_name" type="text" value=""><div id="MassUpdate_mass_assigned_user_name_results" class="yui-ac-container"><div class="yui-ac-content" style="display: none;"><div class="yui-ac-hd" style="display: none;"></div><div class="yui-ac-bd"><ul><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li></ul></div><div class="yui-ac-ft" style="display: none;"></div></div></div><input id="mass_assigned_user_id" name="assigned_user_id" type="hidden" value="">
+        <span class="id-ff multiple"><button id="mass_assigned_user_name_btn" title="Select" type="button" class="button" value="Select" name="btn1" onclick="open_popup(&quot;Users&quot;, 600, 400, &quot;&quot;, true, false, {&quot;call_back_function&quot;:&quot;set_return&quot;,&quot;form_name&quot;:&quot;MassUpdate&quot;,&quot;field_to_name_array&quot;:{&quot;id&quot;:&quot;assigned_user_id&quot;,&quot;user_name&quot;:&quot;assigned_user_name&quot;}});"><img src="themes/SuiteP/images/id-ff-select.png?v=-X3bS6lOB-EZRqhczixknw"></button></span>
+        </td><script type="text/javascript" language="javascript">if(typeof sqs_objects == 'undefined'){var sqs_objects = new Array;}sqs_objects['MassUpdate_assigned_user_name'] = {"form":"MassUpdate","method":"get_user_array","field_list":["user_name","id"],"populate_list":["mass_assigned_user_name","mass_assigned_user_id"],"conditions":[{"name":"user_name","op":"like_custom","end":"%","value":""}],"limit":"30","no_match_text":"No Match"}; registerSingleSmartInputListener(document.getElementById('mass_assigned_user_name'));
+                addToValidateBinaryDependency('MassUpdate', 'assigned_user_name', 'alpha', false, 'No match for field: Assigned to:','assigned_user_id');
+                </script><td scope="row" width="15%">Type</td><td><select id="mass_type" name="type">
+<option selected="" value="">--None--</option>
+<option value="__SugarMassUpdateClearField__"></option>
+<option value="Auto_Crash">Auto Crash</option>
+<option value="Auto_V_Pedestrian">Auto crash into a Pedestrian</option>
+<option value="Auto_Crash_Death">Auto Crash Wrongful Death</option>
+<option value="Auto_v_Pedistrian_Death">Auto v. Pedestrian Wrongful Death</option>
+<option value="Auto_with_Companions">Auto with Companions</option>
+<option value="Auto_with_Companions_with_Death">Auto with Companions with a Wrongful Death</option>
+<option value="Bankruptcy">Bankruptcy</option>
+<option value="Bicycle_Crash">Bicycle Crash</option>
+<option value="Bicycle_Crash_Death">Bicycle Crash Wrongful Death</option>
+<option value="Dog_Bite">Dog Bite</option>
+<option value="Dog_Bite_Death">Dog Bite Wrongful Death</option>
+<option value="DUI_Auto_Crash">DUI Auto Crash</option>
+<option value="DUI_Auto_Crash_Death">DUI Auto Crash Wrongful Death</option>
+<option value="DUI_Auto_with_Companions">DUI Auto with Companions</option>
+<option value="DUI_Auto_with_Companion_with_Death">DUI Auto with Companions with a Wrongful Death</option>
+<option value="Fee_Petition">Fee Petition</option>
+<option value="Medical_Malpractice">Medical Malpractice</option>
+<option value="Medical_Malpractice_Pre_Suit">Medical Malpractice Pre-Suit</option>
+<option value="Medical_Malpractice_Death">Medical Malpractice Wrongful Death</option>
+<option value="Miscellaneous_type_Case">Miscellaneous</option>
+<option value="Miscellaneous_type_Case_Death">Miscellaneous Case with a Wrongful Death</option>
+<option value="Motorcycle_Crash">Motorcycle Crash</option>
+<option value="Motorcycle_Crash_Death">Motorcycle Crash Wrongful Death</option>
+<option value="Multiple_Claims_Companions_Death">Multiple Claims case with Companions and a Wrongful Death</option>
+<option value="Multiple_Claims_in_One">Multiple Claims in One</option>
+<option value="Multiple_Claims_in_one_with_Death">Multiple Claims in one with a Wrongful Death</option>
+<option value="Multiple_Claims_Companion">Multiple Claims in One with Companions</option>
+<option value="Negligent_Security">Negligent Security</option>
+<option value="Negligent_Security_Death">Negligent Security Wrongful Death</option>
+<option value="Nursing_Home_Neglect">Nursing Home Neglect</option>
+<option value="Nursing_Home_Pre_Suit">Nursing Home Pre-Suit</option>
+<option value="Nursing_Home_Death">Nursing Home Wrongful Death</option>
+<option value="Pharmacy_Negligence">Pharmacy Negligence</option>
+<option value="Pharmacy_Negligence_Death">Pharmacy Negligence Wrongful Death</option>
+<option value="Premises_Liability">Premises Liability</option>
+<option value="Probate_Estate">Probate Estate</option>
+<option value="Probate_Guardianship">Probate Guardianship</option>
+<option value="Probate_Litigation">Probate Litigation</option>
+<option value="Products_Liability">Products Liability</option>
+<option value="Products_Liability_Death">Products Liability Wrongful Death</option>
+<option value="Slip_and_Fall">Slip and Fall</option>
+<option value="Slip_and_Fall_Death">Slip and Fall Wrongful Death</option>
+<option value="Social_Security">Social Security</option>
+<option value="Trip_and_Fall">Trip and Fall</option>
+<option value="Trip_and_Fall_Death">Trip and Fall Wrongful Death</option>
+<option value="Trucking_Crash">Trucking Crash</option>
+<option value="Trucking_Crash_Death">Trucking Crash Wrongful Death</option>
+<option value="Workers_Compensation">Workers Compensation</option>
+<option value="Workers_Compensation_Death">Workers Compensation Wrongful Death</option></select></td></tr><tr><td scope="row" width="15%">Status:</td><td><select id="mass_status" name="status">
+<option selected="" value="">--None--</option>
+<option value="__SugarMassUpdateClearField__"></option>
+<option value="PreSuit_1">Pre-Suit 1 Investigation</option>
+<option value="Med_Mal_PreSuit_1">Med Mal Pre-Suit 1 Ordering Medical records</option>
+<option value="Med_Mal_PreSuit_2">Med Mal Pre-Suit 2 Have the records looking for an Expert</option>
+<option value="Med_Mal_PreSuit_3">Med Mal Pre-Suit 3 We have sent our Notice of Intent</option>
+<option value="PreSuit_2">Pre-Suit 2 Treating</option>
+<option value="PreSuit_3">Pre-Suit 3 Order all records and prepare a Formal Demand Letter</option>
+<option value="PreSuit_4">Pre-Suit 4 Prepare a quick Go Fish Demand Letter</option>
+<option value="PreSuit_5">Pre-Suit 5 Negotiations Period of 45 days with just one Liability carrier when there is no UM</option>
+<option value="PreSuit_5.1">Pre-Suit 5.1 Negotiations Period of 45 days with Multiple Liability Carriers and no UM</option>
+<option value="PreSuit_5.2">Pre-Suit 5.2 Negotiations Period of 45 days with BI carrier but later there will be a UM demand</option>
+<option value="PreSuit_5.3">Pre-Suit 5.3 Negotiations Period of 65 days with UM carrier only</option>
+<option value="PreSuit_5.4">Pre-Suit 5.4 45 day and 65 Day Negotiation Periods when we send a BI and UM at the same time</option>
+<option value="PreSuit_5.5">Pre-Suit 5.5 We extend the time to respond to our Offer to Settle for up to 30 more days</option>
+<option value="PreSuit_6">Pre-Suit 6 Decision to File Suit</option>
+<option value="PreSuit_6.1">Pre-Suit 6.1 Attorney to talk to client</option>
+<option value="PreSuit_6.2">Pre-Suit 6.2 Letter sent to client to fill out Pre-Suit Roggs</option>
+<option value="PreSuit_6.3">Pre-Suit 6.3 Waiting for Client to answer Pre-Suit Roggs</option>
+<option value="PreSuit_6.4">Pre-Suit 6.4 Reminder to Answer Roggs or else take the last offer</option>
+<option value="PreSuit_6.5">Pre-Suit 6.5 Answer Roggs soon or we will close your file</option>
+<option value="PreSuit_6.6">Pre-Suit 6.6 Roggs are answered and Lawyer to prepare Complaint</option>
+<option value="Lit_1">Lit 1 Obtaining Service upon All Defendants</option>
+<option value="Lit_2">Lit 2 Every Defendant has Answered</option>
+<option value="Lit_3">Lit 3 Discovery Phase for Punitive Damages</option>
+<option value="Lit_4">Lit 4 Waiting for a Trial Date to be assigned</option>
+<option value="Lit_5">Lit 5 We have a Trial Date</option>
+<option value="Lit_6">Lit 6 Discovery Cut Off</option>
+<option value="Lit_7">Lit 7 Trial itself</option>
+<option value="Lit_8">Lit 8 Post Trial Motions</option>
+<option value="Appeal_Pending">Appeal Pending</option>
+<option value="Referred_Out">Referred Out</option>
+<option value="Adiosed">Adiosed</option>
+<option value="Pending_Reductions">Pending Reductions</option>
+<option value="Pending_Signed_Closing">Pending Signed Closing</option>
+<option value="Pending_Adios">Pending Adios waiting for return of the Green Card</option>
+<option value="Closed">Closed</option></select></td><td scope="row" width="15%">Priority:</td><td><select id="mass_priority" name="priority">
+<option selected="" value="">--None--</option>
+<option value="__SugarMassUpdateClearField__"></option>
+<option value="P1">High</option>
+<option value="P2">Medium</option>
+<option value="P3">Low</option></select></td></tr><tr><td scope="row">Organization Name: </td>
+<td><input class="sqsEnabled yui-ac-input" type="text" autocomplete="off" id="mass_account_name" name="account_name" value=""><div id="MassUpdate_mass_account_name_results" class="yui-ac-container"><div class="yui-ac-content" style="display: none;"><div class="yui-ac-hd" style="display: none;"></div><div class="yui-ac-bd"><ul><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li></ul></div><div class="yui-ac-ft" style="display: none;"></div></div></div><input id="mass_account_id" type="hidden" name="account_id" value="">&nbsp;<span class="id-ff multiple"><button type="button" name="btn1" class="button" title="Select" value="Select" onclick="open_popup(&quot;Accounts&quot;,600,400,&quot;&quot;,true,false,{&quot;call_back_function&quot;:&quot;set_return&quot;,&quot;form_name&quot;:&quot;MassUpdate&quot;,&quot;field_to_name_array&quot;:{&quot;id&quot;:&quot;account_id&quot;,&quot;name&quot;:&quot;account_name&quot;}});"><img alt="themes/SuiteP/images/id-ff-select.png?v=-X3bS6lOB-EZRqhczixknw" src="themes/SuiteP/images/id-ff-select.png?v=-X3bS6lOB-EZRqhczixknw"></button></span></td>
+<script type="text/javascript" language="javascript">if(typeof sqs_objects == 'undefined'){var sqs_objects = new Array;}sqs_objects['MassUpdate_account_name'] = {"form":"MassUpdate","method":"query","modules":["Accounts"],"group":"or","field_list":["name","id"],"populate_list":["mass_account_name","mass_account_id"],"conditions":[{"name":"name","op":"like_custom","end":"%","value":""}],"order":"name","limit":"30","no_match_text":"No Match"}; registerSingleSmartInputListener(document.getElementById('mass_account_name'));
+                    addToValidateBinaryDependency('MassUpdate', 'account_name', 'alpha', false, 'No match for field: Account','account_id');
+                    </script><td scope="row" width="15%">State:</td><td><select id="mass_state" name="state">
+<option selected="" value="">--None--</option>
+<option value="__SugarMassUpdateClearField__"></option>
+<option value="Open">Open</option>
+<option value="Closed">Closed</option></select></td></tr><tr><td width="15%" scope="row" class="dataLabel">Created by contact</td>
+<td width="35%" class="dataField">
+    <input name="contact_created_by_name" id="mass_contact_created_by_name" class="sqsEnabled yui-ac-input" autocomplete="off" type="text" value=""><div id="MassUpdate_mass_contact_created_by_name_results" class="yui-ac-container"><div class="yui-ac-content" style="display: none;"><div class="yui-ac-hd" style="display: none;"></div><div class="yui-ac-bd"><ul><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li><li style="display: none;"></li></ul></div><div class="yui-ac-ft" style="display: none;"></div></div></div>
+    <input name="contact_created_by_id" id="mass_contact_created_by_id" type="hidden" value="">
+    <span class="id-ff multiple">
+    <button title="Select" type="button" class="button" value="Select" name="button" onclick="open_popup(&quot;Contacts&quot;, 600, 400, &quot;&quot;, true, false, {&quot;call_back_function&quot;:&quot;set_return&quot;,&quot;form_name&quot;:&quot;MassUpdate&quot;,&quot;field_to_name_array&quot;:{&quot;id&quot;:&quot;contact_created_by_id&quot;,&quot;name&quot;:&quot;contact_created_by_name&quot;}});"><img alt="themes/SuiteP/images/id-ff-select.png?v=-X3bS6lOB-EZRqhczixknw" src="themes/SuiteP/images/id-ff-select.png?v=-X3bS6lOB-EZRqhczixknw"></button></span>
+</td>
+<script type="text/javascript">
+<!--
+if(typeof sqs_objects == 'undefined'){
+    var sqs_objects = new Array;
+}
+sqs_objects['MassUpdate_contact_created_by_name'] = {"form":"MassUpdate","method":"query","modules":["Contacts"],"group":"or","field_list":["name","id"],"populate_list":["mass_contact_created_by_name","mass_contact_created_by_id"],"conditions":[{"name":"name","op":"like_custom","end":"%","value":""}],"limit":"30","no_match_text":"No Match"};
+registerSingleSmartInputListener(document.getElementById('mass_contact_created_by_name'));
+addToValidateBinaryDependency('MassUpdate', 'contact_created_by_name', 'alpha', false, 'No match for field:  Assigned to:','contact_created_by_id');
+-->
+</script><td scope="row" width="15%">Internal Update</td><td><input type="hidden" name="internal" value="0"><input type="checkbox" id="mass_internal" name="internal" value="1"></td></tr><tr><td scope="row" width="15%">Case Role</td><td><select id="mass_account_case_role" name="account_case_role">
+<option selected="" value="">--None--</option>
+<option value="__SugarMassUpdateClearField__"></option>
+<option value="Adjuster">Adjuster</option>
+<option value="Attorney">Attorney</option>
+<option value="Clerk_of_Court">Clerk of Court</option>
+<option value="Client">Client</option>
+<option value="Defendant">Defendant</option>
+<option value="Doctor_Treating">Doctor Treating Plaintiff</option>
+<option value="Injured_Person">Injured Person</option>
+<option value="Referral_Attorney">Referral Attorney</option>
+<option value="Referral_Non_Attorney">Referral Non-Attorney</option>
+<option value="Defense_Attorney">Defense Attorney</option>
+<option value="Insurance_Company">Insurance Company</option>
+<option value="Insured_Person">Insured Person</option>
+<option value="Investigator">Investigator</option>
+<option value="Judge">Judge</option>
+<option value="Lien_Holder">Lien Holder</option>
+<option value="Police">Police</option>
+<option value="Primary_Contact">Primary Contact</option>
+<option value="Process_Server">Process Server</option>
+<option value="Vendor">Vendor</option>
+<option value="Witness_B_A">Witness B&amp;A</option>
+<option value="Witness_Expert_for_Defendant">Witness Expert for Defendant</option>
+<option value="Witness_Expert_for_Plaintiff">Witness Expert for Plaintiff</option>
+<option value="Witness_Fact_Defendant">Witness Fact for Defendant</option>
+<option value="Witness_Fact_Plaintiff">Witness Fact for Plaintiff</option></select></td><td scope="row" width="15%">Case Role</td><td><select id="mass_contact_case_role" name="contact_case_role">
+<option selected="" value="">--None--</option>
+<option value="__SugarMassUpdateClearField__"></option>
+<option value="Adjuster">Adjuster</option>
+<option value="Attorney">Attorney</option>
+<option value="Clerk_of_Court">Clerk of Court</option>
+<option value="Client">Client</option>
+<option value="Defendant">Defendant</option>
+<option value="Doctor_Treating">Doctor Treating Plaintiff</option>
+<option value="Injured_Person">Injured Person</option>
+<option value="Referral_Attorney">Referral Attorney</option>
+<option value="Referral_Non_Attorney">Referral Non-Attorney</option>
+<option value="Defense_Attorney">Defense Attorney</option>
+<option value="Insurance_Company">Insurance Company</option>
+<option value="Insured_Person">Insured Person</option>
+<option value="Investigator">Investigator</option>
+<option value="Judge">Judge</option>
+<option value="Lien_Holder">Lien Holder</option>
+<option value="Police">Police</option>
+<option value="Primary_Contact">Primary Contact</option>
+<option value="Process_Server">Process Server</option>
+<option value="Vendor">Vendor</option>
+<option value="Witness_B_A">Witness B&amp;A</option>
+<option value="Witness_Expert_for_Defendant">Witness Expert for Defendant</option>
+<option value="Witness_Expert_for_Plaintiff">Witness Expert for Plaintiff</option>
+<option value="Witness_Fact_Defendant">Witness Fact for Defendant</option>
+<option value="Witness_Fact_Plaintiff">Witness Fact for Plaintiff</option></select></td></tr><tr><td scope="row" width="15%">Case Role</td><td><select id="mass_account_role" name="account_role">
+<option selected="" value="">--None--</option>
+<option value="__SugarMassUpdateClearField__"></option>
+<option value="Adjuster">Adjuster</option>
+<option value="Attorney">Attorney</option>
+<option value="Clerk_of_Court">Clerk of Court</option>
+<option value="Client">Client</option>
+<option value="Defendant">Defendant</option>
+<option value="Doctor_Treating">Doctor Treating Plaintiff</option>
+<option value="Injured_Person">Injured Person</option>
+<option value="Referral_Attorney">Referral Attorney</option>
+<option value="Referral_Non_Attorney">Referral Non-Attorney</option>
+<option value="Defense_Attorney">Defense Attorney</option>
+<option value="Insurance_Company">Insurance Company</option>
+<option value="Insured_Person">Insured Person</option>
+<option value="Investigator">Investigator</option>
+<option value="Judge">Judge</option>
+<option value="Lien_Holder">Lien Holder</option>
+<option value="Police">Police</option>
+<option value="Primary_Contact">Primary Contact</option>
+<option value="Process_Server">Process Server</option>
+<option value="Vendor">Vendor</option>
+<option value="Witness_B_A">Witness B&amp;A</option>
+<option value="Witness_Expert_for_Defendant">Witness Expert for Defendant</option>
+<option value="Witness_Expert_for_Plaintiff">Witness Expert for Plaintiff</option>
+<option value="Witness_Fact_Defendant">Witness Fact for Defendant</option>
+<option value="Witness_Fact_Plaintiff">Witness Fact for Plaintiff</option></select></td><td scope="row" width="15%">Archive Cases</td><td><input type="hidden" name="archive_cases" value="0"><input type="checkbox" id="mass_archive_cases" name="archive_cases" value="1"></td></tr><tr><td scope="row" width="15%">Case Role</td><td><select id="mass_contact_role" name="contact_role">
+<option selected="" value="">--None--</option>
+<option value="__SugarMassUpdateClearField__"></option>
+<option value="Adjuster">Adjuster</option>
+<option value="Attorney">Attorney</option>
+<option value="Clerk_of_Court">Clerk of Court</option>
+<option value="Client">Client</option>
+<option value="Defendant">Defendant</option>
+<option value="Doctor_Treating">Doctor Treating Plaintiff</option>
+<option value="Injured_Person">Injured Person</option>
+<option value="Referral_Attorney">Referral Attorney</option>
+<option value="Referral_Non_Attorney">Referral Non-Attorney</option>
+<option value="Defense_Attorney">Defense Attorney</option>
+<option value="Insurance_Company">Insurance Company</option>
+<option value="Insured_Person">Insured Person</option>
+<option value="Investigator">Investigator</option>
+<option value="Judge">Judge</option>
+<option value="Lien_Holder">Lien Holder</option>
+<option value="Police">Police</option>
+<option value="Primary_Contact">Primary Contact</option>
+<option value="Process_Server">Process Server</option>
+<option value="Vendor">Vendor</option>
+<option value="Witness_B_A">Witness B&amp;A</option>
+<option value="Witness_Expert_for_Defendant">Witness Expert for Defendant</option>
+<option value="Witness_Expert_for_Plaintiff">Witness Expert for Plaintiff</option>
+<option value="Witness_Fact_Defendant">Witness Fact for Defendant</option>
+<option value="Witness_Fact_Plaintiff">Witness Fact for Plaintiff</option></select></td></tr></tbody></table><table cellpadding="0" cellspacing="0" border="0" width="100%"><tbody><tr><td class="buttons"><input onclick="return sListView.send_mass_update(&quot;selected&quot;, &quot;Please select at least 1 record to proceed.&quot;)" type="submit" id="update_button" name="Update" value="Update" class="button">&nbsp;<input onclick="javascript:toggleMassUpdateForm();" type="button" id="cancel_button" name="Cancel" value="Cancel" class="button"></td></tr></tbody></table></div></div><script>
+function toggleMassUpdateForm(){
+    document.getElementById('massupdate_form').style.display = 'none';
+}
+</script></form></div>

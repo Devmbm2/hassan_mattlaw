@@ -1,0 +1,16 @@
+$(document).ready(function(){
+	hidePanel1();
+	$( '#type' ).change(function() {
+		hidePanel1();
+	});
+});
+
+function hidePanel1(){
+	$('#top-panel-1').parent().parent().hide();
+	var type = $('#type').val();
+	if (type.includes("Multiple_Claims")){
+	    $('#top-panel-1').parent().parent().show();
+	}	
+}
+
+

@@ -1,0 +1,2 @@
+<?php
+if(ACLController::checkAccess('Tasks', 'list', true))$module_menu[] =Array("index.php?module=Tasks&action=index&return_module=Tasks&return_action=DetailView&clear_query=true&is_archived=1", 'Archived Tasks',"List", 'Tasks');

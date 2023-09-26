@@ -1,0 +1,2 @@
+<?php
+if(ACLController::checkAccess('Contacts', 'list', true))$module_menu[] =Array("index.php?module=Contacts&action=index&return_module=Contacts&return_action=DetailView&clear_query=true&active_client=1", 'Active Clients',"List", 'Contacts');

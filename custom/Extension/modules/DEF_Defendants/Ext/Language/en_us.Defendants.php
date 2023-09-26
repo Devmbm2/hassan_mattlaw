@@ -1,0 +1,4 @@
+<?php
+//THIS FILE IS AUTO GENERATED, DO NOT MODIFY
+$mod_strings['LBL_DEF_DEFENDANTS_CASES_FROM_CASES_TITLE'] = 'Cases';
+$mod_strings['LBL_FIRM_FEE'] = 'Firm Fee';

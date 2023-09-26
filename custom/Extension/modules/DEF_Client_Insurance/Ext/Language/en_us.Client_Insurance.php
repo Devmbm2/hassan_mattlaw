@@ -1,0 +1,5 @@
+<?php
+//THIS FILE IS AUTO GENERATED, DO NOT MODIFY
+$mod_strings['LBL_DEF_CLIENT_INSURANCE_CASES_FROM_CASES_TITLE'] = 'Client&#039;s Insurance';
+$mod_strings['LBL_DEF_CLIENT_INSURANCE_CASES_1_FROM_CASES_TITLE'] = 'Case';
+$mod_strings['LBL_FIRM_FEE'] = 'Firm Fee';

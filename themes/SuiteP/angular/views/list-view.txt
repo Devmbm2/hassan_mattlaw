@@ -1,0 +1,496 @@
+<div ng-if="showAccountsList">
+      <table cellpadding="0" cellspacing="0" border="0" class="list view table-responsive">
+          <thead>
+
+          <tr height="20">
+              <th class="td_alt">&nbsp;</th>
+              <th class="td_alt quick_view_links">&nbsp;</th>
+
+
+              <th scope="col" data-toggle="true" class="">
+                  <div>
+                      <a href="javascript:sListView.order_checks(&quot;ASC&quot;, &quot;name&quot; , &quot;Accounts2_ACCOUNT_ORDER_BY&quot;)" class="listViewThLinkS1">
+                          Name
+                          &nbsp;&nbsp;  																															<span class="suitepicon suitepicon-action-sorting-none" title="Sort"></span>
+                      </a>
+                  </div>
+              </th>
+
+
+              <th scope="col" data-breakpoints="xs sm" class="hidden-xs">
+                  <div>
+                      <a href="javascript:sListView.order_checks(&quot;ASC&quot;, &quot;billing_address_city&quot; , &quot;Accounts2_ACCOUNT_ORDER_BY&quot;)" class="listViewThLinkS1">
+                          City
+                          &nbsp;&nbsp;  																															<span class="suitepicon suitepicon-action-sorting-none" title="Sort"></span>
+                      </a>
+                  </div>
+              </th>
+
+
+              <th scope="col" data-breakpoints="xs sm" class="hidden-xs">
+                  <div>
+                      <a href="javascript:sListView.order_checks(&quot;ASC&quot;, &quot;billing_address_country&quot; , &quot;Accounts2_ACCOUNT_ORDER_BY&quot;)" class="listViewThLinkS1">
+                          Billing Country
+                          &nbsp;&nbsp;  																															<span class="suitepicon suitepicon-action-sorting-none" title="Sort"></span>
+                      </a>
+                  </div>
+              </th>
+
+
+              <th scope="col" data-breakpoints="xs sm" class="hidden-xs">
+                  <div>
+                      <a href="javascript:sListView.order_checks(&quot;ASC&quot;, &quot;phone_office&quot; , &quot;Accounts2_ACCOUNT_ORDER_BY&quot;)" class="listViewThLinkS1">
+                          Phone
+                          &nbsp;&nbsp;  																															<span class="suitepicon suitepicon-action-sorting-none" title="Sort"></span>
+                      </a>
+                  </div>
+              </th>
+
+
+              <th scope="col" data-breakpoints="xs sm" class="hidden-xs">
+                  <div>
+                      <a href="javascript:sListView.order_checks(&quot;ASC&quot;, &quot;assigned_user_name&quot; , &quot;Accounts2_ACCOUNT_ORDER_BY&quot;)" class="listViewThLinkS1">
+                          User
+                          &nbsp;&nbsp;  																															<span class="suitepicon suitepicon-action-sorting-none" title="Sort"></span>
+                      </a>
+                  </div>
+              </th>
+
+
+              <th scope="col" data-breakpoints="md" class="hidden-xs hidden-sm">
+                  <div>
+                      Email Address
+                      &nbsp;&nbsp;  																			</div>
+              </th>
+
+
+              <th scope="col" data-breakpoints="md" class="hidden-xs hidden-sm">
+                  <div>
+                      <a href="javascript:sListView.order_checks(&quot;ASC&quot;, &quot;date_entered&quot; , &quot;Accounts2_ACCOUNT_ORDER_BY&quot;)" class="listViewThLinkS1">
+                          Date Created
+                          &nbsp;&nbsp;  																																										<span class="suitepicon suitepicon-action-sorting-descending" title="Sorted Descending"></span>
+                      </a>
+                  </div>
+              </th>
+
+              <th></th>
+          </tr>
+
+
+
+          <tr id="pagination" class="pagination-unique" role="presentation">
+              <td colspan="18">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" class="paginationTable">
+                      <tbody><tr>
+                          <td nowrap="nowrap" class="paginationActionButtons">
+
+                              <ul id="selectLinkTop" class="clickMenu selectmenu SugarActionMenu"><li class="sugar_action_button"><label class="glyphicon bootstrap-checkbox initialized-checkbox glyphicon-unchecked"><span class="suitepicon suitepicon-action-caret"></span></label><input title="Select all" type="checkbox" class="bootstrap-checkbox-hidden checkbox massall" name="massall" id="massall_top" value="" onclick="sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, this.checked);" style="display: none;"><div class="selectedRecords label hidden">Selected: </div><div class="selectedRecords value hidden">0</div>
+                                      <input type="hidden" id="selectCountTop" name="selectCount[]" value="0">
+
+                                      <script>
+
+                                          $(document).ready(function () {
+                                              function update_selectedRecordsTopValue() {
+                                                  var selectedNum = sugarListView.get_num_selected();
+                                                  if(!selectedNum) {
+                                                      $('.selectedRecords').addClass('hidden');
+                                                  }
+                                                  else {
+                                                      $('.selectedRecords').removeClass('hidden');
+                                                  }
+                                                  $('.selectedRecords.value').html(selectedNum);
+                                              }
+                                              setInterval(update_selectedRecordsTopValue, 100);
+                                          });
+
+                                      </script><a id="select_link" href="javascript: void(0);"></a><ul id="" class="subnav" style=""><li><a name="thispage" id="button_select_this_page_top" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="if (document.MassUpdate.select_entire_list.value==1){document.MassUpdate.select_entire_list.value=0;sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, true, 2)}else {sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, true)};" href="#">Select&nbsp;This Page&nbsp;(2)&lrm;</a></li><li><a name="selectall" id="button_select_all_top" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sListView.check_entire_list(document.MassUpdate, &quot;mass[]&quot;,true,2);" href="#">Select&nbsp;All&nbsp;(2)&lrm;</a></li><li><a name="deselect" id="button_deselect_top" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sListView.clear_all(document.MassUpdate, &quot;mass[]&quot;, false);" href="#">Deselect&nbsp;All</a></li></ul></li></ul>
+
+                              <ul id="actionLinkTop" class="clickMenu selectActions fancymenu SugarActionMenu" name="selectActions">
+                                  <li class="sugar_action_button"><a href="javascript:void(0)" class="parent-dropdown-handler" id="delete_listview_top" onclick="return false;">
+                                          <label class="selected-actions-label hidden-mobile">ACTION<span class="suitepicon suitepicon-action-caret">
+                                              </span></label><label class="selected-actions-label hidden-desktop">BULK ACTION<span class="suitepicon suitepicon-action-caret">
+
+                                              </span></label></a>
+                                      <ul id="" class="subnav" style="">
+                                  <li>
+                                      <a class="email-link" href="javascript:void(0);" onclick="$(document).openComposeViewModal(this);" data-module="" data-record-id="" data-module-name="" data-email-address="">Email</a>
+                                  </li>
+                                          <li>
+                                              <a href="javascript:void(0)" class="parent-dropdown-action-handler" id="massupdate_listview_top" onclick="document.getElementById('massupdate_form').style.display = ''; var yLoc = YAHOO.util.Dom.getY('massupdate_form'); scroll(0,yLoc);">Mass&nbsp;Update</a>
+                                          </li>
+                                          <li>
+                                              <a href="javascript:void(0)" class="parent-dropdown-action-handler" id="mergeduplicates_listview_top" onclick="if (sugarListView.get_checks_count()> 1) {sListView.send_form(true, &quot;MergeRecords&quot;, &quot;index.php&quot;, &quot;Please select at least 1 record to proceed.&quot;, &quot;Accounts&quot;,&quot;&amp;return_module=Accounts&amp;return_action=index&quot;);} else {alert(&quot;Please select at least 2 records to proceed.&quot;);return false;}">Merge</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="targetlist_listview_top " onclick="            if(sugarListView.get_checks_count() < 1) {                alert('Please select at least 1 record to proceed.');                return false;            }			if ( document.forms['targetlist_form'] ) {				var form = document.forms['targetlist_form'];				form.reset;			} else				var form = document.createElement ( 'form' ) ;			form.setAttribute ( 'name' , 'targetlist_form' );			form.setAttribute ( 'method' , 'post' ) ;			form.setAttribute ( 'action' , 'index.php' );			document.body.appendChild ( form ) ;			if ( !form.module ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'module' );			    input.setAttribute ( 'value' , 'Accounts' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'action' );			    input.setAttribute ( 'value' , 'TargetListUpdate' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.uids ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'uids' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.prospect_list ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'prospect_list' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.return_module ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'return_module' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.return_action ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'return_action' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.select_entire_list ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'select_entire_list' );			    input.setAttribute ( 'value', document.MassUpdate.select_entire_list.value);			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.current_query_by_page ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'current_query_by_page' );			    input.setAttribute ( 'value', '{&quot;module&quot;:&quot;Accounts&quot;,&quot;action&quot;:&quot;index&quot;,&quot;parentTab&quot;:&quot;Sales&quot;,&quot;ajax_load&quot;:&quot;1&quot;,&quot;loadLanguageJS&quot;:&quot;1&quot;,&quot;searchFormTab&quot;:&quot;basic_search&quot;}' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			open_popup('ProspectLists','600','400','',true,false,{ 'call_back_function':'set_return_and_save_targetlist','form_name':'targetlist_form','field_to_name_array':{'id':'prospect_list'} } );">Add&nbsp;To Target List</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="targetlist_listview " onclick="             if(sugarListView.get_checks_count() < 1) {                 alert('Please select at least 1 record to proceed.');                 return false;             } 			if ( document.forms['targetlist_form'] ) { 				var form = document.forms['targetlist_form']; 				form.reset; 			} else 				var form = document.createElement ( 'form' ) ; 			form.setAttribute ( 'name' , 'targetlist_form' ); 			form.setAttribute ( 'method' , 'post' ) ; 			form.setAttribute ( 'action' , 'index.php' ); 			document.body.appendChild ( form ) ; 			if ( !form.module ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'module' ); 			    input.setAttribute ( 'value' , 'Accounts' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'action' ); 			    input.setAttribute ( 'value' , 'TargetListUpdate' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.uids ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'uids' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.prospect_list ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'prospect_list' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.return_module ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'return_module' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.return_action ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'return_action' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.select_entire_list ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'select_entire_list' ); 			    input.setAttribute ( 'value', document.MassUpdate.select_entire_list.value); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.current_query_by_page ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'current_query_by_page' ); 			    input.setAttribute ( 'value', '{&quot;module&quot;:&quot;Accounts&quot;,&quot;action&quot;:&quot;index&quot;,&quot;parentTab&quot;:&quot;Sales&quot;,&quot;ajax_load&quot;:&quot;1&quot;,&quot;loadLanguageJS&quot;:&quot;1&quot;,&quot;searchFormTab&quot;:&quot;basic_search&quot;}' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			open_popup('ProspectLists','600','400','',true,false,{ 'call_back_function':'set_return_and_save_targetlist', 'form_name':'targetlist_form','field_to_name_array':{'id':'prospect_list'}, 'passthru_data':{'do_contacts' : 1 }   } );">Add&nbsp;Contacts To Target List</a></li><li><a href="#" class="menuItem" onmouseover="hiliteItem(this,'yes');" onmouseout="unhiliteItem(this);" onclick="showPopup()">Print&nbsp;as PDF</a><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="export_listview_top " onclick="return sListView.send_form(true, 'Accounts', 'index.php?entryPoint=export','Please select at least 1 record to proceed.')">Export</a><a href="javascript:void(0)" id="map_listview_top" onclick="return sListView.send_form(true, 'jjwg_Maps', 'index.php?entryPoint=jjwg_Maps&amp;display_module=Accounts', 'Please select at least 1 record to proceed.')">Map</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="delete_listview_top" onclick="return sListView.send_mass_update('selected', 'Please select at least 1 record to proceed.', 1)">Delete</a></li></ul></li></ul>
+                              <div class="selectActionsDisabled" id="select_actions_disabled_top"><a href="javascript:void(0)" class="parent-dropdown-handler" onclick=""><label class="selected-actions-label hidden-mobile">ACTION<span class="suitepicon suitepicon-action-caret"></span></label><label class="selected-actions-label hidden-desktop">BULK ACTION<span class="suitepicon suitepicon-action-caret"></span></label></a></div>
+
+
+                              <ul class="clickMenu selectmenu searchLink SugarActionMenu listViewLinkButton listViewLinkButton_top">
+                                  <li class="sugar_action_button">
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-filter parent-dropdown-handler" onclick="listViewSearchIcon.toggleSearchDialog('latest'); $('#searchDialog .nav-tabs .active').removeClass('active'); $('#searchDialog .nav-tabs li').first().addClass('active'); $('#searchDialog').modal('toggle');" title="Filter"></a>
+                                  </li>
+                              </ul>
+                              <ul class="searchAppliedAlert hidden clickMenu selectmenu searchAppliedAlertLink SugarActionMenu listViewLinkButton listViewLinkButton_top">
+                                  <li class="sugar_action_button desktopOnly">
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-list-alt clearSearchIcon parent-dropdown-handler" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Accounts');"></a>
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-remove" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Accounts');">тип</a>
+                                  </li>
+                                  <li class="sugar_action_button mobileOnly">
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-list-alt clearSearchIcon parent-dropdown-handler" onclick=""></a>
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-remove" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Accounts');"></a>
+                                  </li>
+                              </ul>												<ul class="clickMenu selectmenu SugarActionMenu columnsFilterLink listViewLinkButton listViewLinkButton_top" onclick="columnsFilter.onOpen();">
+                                  <li class="sugar_action_button">
+                                      <a href="#" class="glyphicon glyphicon-th-list" data-toggle="modal" data-target=".modal-columns-filter" title="Column Chooser"></a>
+                                  </li>
+                              </ul>						&nbsp;
+                          </td>
+                          <td nowrap="nowrap" align="right" class="paginationChangeButtons" width="1%">
+                              <button type="button" id="listViewStartButton_top" name="listViewStartButton" title="Start" class="list-view-pagination-button" disabled="disabled">
+                                  <span class="suitepicon suitepicon-action-first"></span>
+                              </button>
+                              <button type="button" id="listViewPrevButton_top" name="listViewPrevButton" class="list-view-pagination-button" title="Previous" disabled="disabled">
+                                  <span class="suitepicon suitepicon-action-left"></span>
+                              </button>
+                          </td>
+                          <td nowrap="nowrap" width="1%" class="paginationActionButtons">
+                              <div class="pageNumbers">(1 - 2 of 2)</div>
+                          </td>
+                          <td nowrap="nowrap" align="right" class="paginationActionButtons" width="1%">
+                              <button type="button" id="listViewNextButton_top" name="listViewNextButton" class="button" title="Next" disabled="disabled">
+                                  <span class="suitepicon suitepicon-action-right"></span>
+                              </button>
+                              <button type="button" id="listViewEndButton_top" name="listViewEndButton" title="End" class="list-view-pagination-button" disabled="disabled">
+                                  <span class="suitepicon suitepicon-action-last"></span>
+                              </button>
+                          </td>
+                          <td nowrap="nowrap" width="4px" class="paginationActionButtons"></td>
+                      </tr>
+                      </tbody></table>
+              </td>
+          </tr>	</thead>
+          <tbody>
+
+          <tr height="20" class="evenListRowS1" ng-repeat="x in data">
+              <td>
+                  <input title="Select this row" onclick="sListView.check_item(this, document.MassUpdate)" type="checkbox" class="listview-checkbox" name="mass[]" value="7b900a0b-f9d6-4391-b873-5d039bea4804">
+              </td>
+              <td>
+                  <a class="edit-link" title="Edit" id="edit-7b900a0b-f9d6-4391-b873-5d039bea4804" href="index.php?module=Accounts&amp;offset=2&amp;stamp=1563538112019410700&amp;return_module=Accounts&amp;action=EditView&amp;record=7b900a0b-f9d6-4391-b873-5d039bea4804">
+                      <span class="suitepicon suitepicon-action-edit"></span></a>
+              </td>
+             <td scope="row" align="left" valign="top" type="name" field="name" class=" inlineEdit"><b><a href="?action=ajaxui#ajaxUILoc=index.php%3Fmodule%3DAccounts%26offset%3D2%26stamp%3D1563538112019410700%26return_module%3DAccounts%26action%3DDetailView%26record%3D7b900a0b-f9d6-4391-b873-5d039bea4804">
+                          {{x.NAME}}</a><div class="inlineEditIcon"><!--?xml-stylesheet type="text/css" href="../css/style.css" ?-->
+                          <!--?xml-stylesheet type="text/css" href="../css/colourSelector.php" ?-->
+                          <svg version="1.1" id="inline_edit_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+                            <g class="icon" id="Icon_6_">
+                            <g>
+                                        <path class="icon" d="M64,368v80h80l235.727-235.729l-79.999-79.998L64,368z M441.602,150.398
+                                            c8.531-8.531,8.531-21.334,0-29.865l-50.135-50.135c-8.531-8.531-21.334-8.531-29.865,0l-39.468,39.469l79.999,79.998
+                                            L441.602,150.398z"></path>
+                                </g>
+                            </g>
+                            </svg>
+                                                  </div></b>
+             </td>
+             <td align="left" valign="top" type="varchar" field="billing_address_city" class="hidden-xs inlineEdit">
+                  {{x.CITY}} <div class="inlineEditIcon"><!--?xml-stylesheet type="text/css" href="../css/style.css" ?-->
+                      <!--?xml-stylesheet type="text/css" href="../css/colourSelector.php" ?-->
+                      <svg version="1.1" id="inline_edit_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+                    <g class="icon" id="Icon_6_">
+                        <g>
+                            <path class="icon" d="M64,368v80h80l235.727-235.729l-79.999-79.998L64,368z M441.602,150.398
+                                c8.531-8.531,8.531-21.334,0-29.865l-50.135-50.135c-8.531-8.531-21.334-8.531-29.865,0l-39.468,39.469l79.999,79.998
+                                L441.602,150.398z"></path>
+                        </g>
+                    </g>
+                    </svg>
+                                      </div>
+             </td>
+             <td align="left" valign="top" type="varchar" field="billing_address_country" class="hidden-xs inlineEdit">
+                 {{x.BILLING_ADDRESS_COUNTRY}}<div class="inlineEditIcon"><!--?xml-stylesheet type="text/css" href="../css/style.css" ?-->
+                      <!--?xml-stylesheet type="text/css" href="../css/colourSelector.php" ?-->
+                      <svg version="1.1" id="inline_edit_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+                <g class="icon" id="Icon_6_">
+                    <g>
+                        <path class="icon" d="M64,368v80h80l235.727-235.729l-79.999-79.998L64,368z M441.602,150.398
+                            c8.531-8.531,8.531-21.334,0-29.865l-50.135-50.135c-8.531-8.531-21.334-8.531-29.865,0l-39.468,39.469l79.999,79.998
+                            L441.602,150.398z"></path>
+                    </g>
+                </g>
+                </svg>
+                                  </div>
+             </td>
+            <td align="left" valign="top" type="phone" field="phone_office" class="hidden-xs inlineEdit phone">
+                  {{x.PHONE_OFFICE}}<div class="inlineEditIcon"><!--?xml-stylesheet type="text/css" href="../css/style.css" ?-->
+                      <!--?xml-stylesheet type="text/css" href="../css/colourSelector.php" ?-->
+                      <svg version="1.1" id="inline_edit_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+                <g class="icon" id="Icon_6_">
+                    <g>
+                        <path class="icon" d="M64,368v80h80l235.727-235.729l-79.999-79.998L64,368z M441.602,150.398
+                            c8.531-8.531,8.531-21.334,0-29.865l-50.135-50.135c-8.531-8.531-21.334-8.531-29.865,0l-39.468,39.469l79.999,79.998
+                            L441.602,150.398z"></path>
+                    </g>
+                </g>
+                </svg>
+                                  </div>
+            </td>
+            <td align="left" valign="top" type="relate" field="assigned_user_name" class="hidden-xs inlineEdit"><a href="index.php?module=Employees&amp;offset=2&amp;stamp=1563538112019410700&amp;return_module=Employees&amp;action=DetailView&amp;record=1">
+                      {{x.ASSIGNED_USER_NAME}}</a><div class="inlineEditIcon"><!--?xml-stylesheet type="text/css" href="../css/style.css" ?-->
+                      <!--?xml-stylesheet type="text/css" href="../css/colourSelector.php" ?-->
+                      <svg version="1.1" id="inline_edit_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+            <g class="icon" id="Icon_6_">
+                <g>
+                    <path class="icon" d="M64,368v80h80l235.727-235.729l-79.999-79.998L64,368z M441.602,150.398
+                        c8.531-8.531,8.531-21.334,0-29.865l-50.135-50.135c-8.531-8.531-21.334-8.531-29.865,0l-39.468,39.469l79.999,79.998
+                        L441.602,150.398z"></path>
+                </g>
+            </g>
+            </svg>
+                              </div>
+            </td>
+
+            <td align="left" valign="top" type="varchar" field="email1" class="hidden-xs hidden-sm inlineEdit">            <a class="email-link" href="mailto:ht.test@mailinator.com" onclick="$(document).openComposeViewModal(this);" data-module="Accounts" data-record-id="7b900a0b-f9d6-4391-b873-5d039bea4804" data-module-name="test" data-email-address="ht.test@mailinator.com">{{x.EMAIL_ADDRESSES_PRIMARY}}</a><div class="inlineEditIcon"><!--?xml-stylesheet type="text/css" href="../css/style.css" ?-->
+                      <!--?xml-stylesheet type="text/css" href="../css/colourSelector.php" ?-->
+                      <svg version="1.1" id="inline_edit_icon" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="15px" height="15px" viewBox="0 0 512 512" enable-background="new 0 0 512 512" xml:space="preserve">
+                <g class="icon" id="Icon_6_">
+                    <g>
+                        <path class="icon" d="M64,368v80h80l235.727-235.729l-79.999-79.998L64,368z M441.602,150.398
+                            c8.531-8.531,8.531-21.334,0-29.865l-50.135-50.135c-8.531-8.531-21.334-8.531-29.865,0l-39.468,39.469l79.999,79.998
+                            L441.602,150.398z"></path>
+                    </g>
+                </g>
+                </svg>
+                                  </div>
+              </td>
+            <td align="left" valign="top" type="datetime" field="date_entered" class="hidden-xs hidden-sm ">
+                  {{x.DATE_ENTERED}}</td>
+
+
+            <td align="right"><span id="adspan_7b900a0b-f9d6-4391-b873-5d039bea4804" onclick="lvg_dtails('7b900a0b-f9d6-4391-b873-5d039bea4804')" style="position: relative;"><!--not_in_theme!--><span class="suitepicon suitepicon-action-info" title="Additional Details"></span></span></td>
+          </tr>
+          </tbody>
+          <tfoot>
+
+
+
+          <tr id="pagination" class="pagination-unique pagination-bottom" role="presentation">
+              <td colspan="18">
+                  <table border="0" cellpadding="0" cellspacing="0" width="100%" class="paginationTable">
+                      <tbody><tr>
+                          <td nowrap="nowrap" class="paginationActionButtons">
+
+                              <ul id="selectLinkBottom" class="clickMenu selectmenu SugarActionMenu"><li class="sugar_action_button"><label class="glyphicon bootstrap-checkbox initialized-checkbox glyphicon-unchecked"><span class="suitepicon suitepicon-action-caret"></span></label><input title="Select all" type="checkbox" class="bootstrap-checkbox-hidden checkbox massall" name="massall" id="massall_bottom" value="" onclick="sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, this.checked);" style="display: none;"><div class="selectedRecords label hidden">Selected: </div><div class="selectedRecords value hidden">0</div>
+                                      <input type="hidden" id="selectCountTop" name="selectCount[]" value="0">
+
+                                      <script>
+
+                                          $(document).ready(function () {
+                                              function update_selectedRecordsTopValue() {
+                                                  var selectedNum = sugarListView.get_num_selected();
+                                                  if(!selectedNum) {
+                                                      $('.selectedRecords').addClass('hidden');
+                                                  }
+                                                  else {
+                                                      $('.selectedRecords').removeClass('hidden');
+                                                  }
+                                                  $('.selectedRecords.value').html(selectedNum);
+                                              }
+                                              setInterval(update_selectedRecordsTopValue, 100);
+                                          });
+
+                                      </script><a id="select_link" href="javascript: void(0);"></a><ul id="" class="subnav" style=""><li><a name="thispage" id="button_select_this_page_bottom" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="if (document.MassUpdate.select_entire_list.value==1){document.MassUpdate.select_entire_list.value=0;sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, true, 2)}else {sListView.check_all(document.MassUpdate, &quot;mass[]&quot;, true)};" href="#">Select&nbsp;This Page&nbsp;(2)&lrm;</a></li><li><a name="selectall" id="button_select_all_bottom" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sListView.check_entire_list(document.MassUpdate, &quot;mass[]&quot;,true,2);" href="#">Select&nbsp;All&nbsp;(2)&lrm;</a></li><li><a name="deselect" id="button_deselect_bottom" class="menuItem" onmouseover="hiliteItem(this,&quot;yes&quot;);" onmouseout="unhiliteItem(this);" onclick="sListView.clear_all(document.MassUpdate, &quot;mass[]&quot;, false);" href="#">Deselect&nbsp;All</a></li></ul></li></ul>
+
+
+                              <ul id="actionLinkBottom" class="clickMenu selectActions fancymenu SugarActionMenu" name="selectActions"><li class="sugar_action_button"><a href="javascript:void(0)" class="parent-dropdown-handler" id="delete_listview_bottom" onclick="return false;"><label class="selected-actions-label hidden-mobile">ACTION<span class="suitepicon suitepicon-action-caret"></span></label><label class="selected-actions-label hidden-desktop">BULK ACTION<span class="suitepicon suitepicon-action-caret"></span></label></a><ul id="" class="subnav" style=""><li><a class="email-link" href="javascript:void(0);" onclick="$(document).openComposeViewModal(this);" data-module="" data-record-id="" data-module-name="" data-email-address="">Email</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="massupdate_listview_bottom" onclick="document.getElementById('massupdate_form').style.display = ''; var yLoc = YAHOO.util.Dom.getY('massupdate_form'); scroll(0,yLoc);">Mass&nbsp;Update</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="mergeduplicates_listview_bottom" onclick="if (sugarListView.get_checks_count()> 1) {sListView.send_form(true, &quot;MergeRecords&quot;, &quot;index.php&quot;, &quot;Please select at least 1 record to proceed.&quot;, &quot;Accounts&quot;,&quot;&amp;return_module=Accounts&amp;return_action=index&quot;);} else {alert(&quot;Please select at least 2 records to proceed.&quot;);return false;}">Merge</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="targetlist_listview_bottom " onclick="            if(sugarListView.get_checks_count() < 1) {                alert('Please select at least 1 record to proceed.');                return false;            }			if ( document.forms['targetlist_form'] ) {				var form = document.forms['targetlist_form'];				form.reset;			} else				var form = document.createElement ( 'form' ) ;			form.setAttribute ( 'name' , 'targetlist_form' );			form.setAttribute ( 'method' , 'post' ) ;			form.setAttribute ( 'action' , 'index.php' );			document.body.appendChild ( form ) ;			if ( !form.module ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'module' );			    input.setAttribute ( 'value' , 'Accounts' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'action' );			    input.setAttribute ( 'value' , 'TargetListUpdate' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.uids ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'uids' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.prospect_list ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'prospect_list' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.return_module ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'return_module' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.return_action ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'return_action' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.select_entire_list ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'select_entire_list' );			    input.setAttribute ( 'value', document.MassUpdate.select_entire_list.value);			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			if ( !form.current_query_by_page ) {			    var input = document.createElement('input');			    input.setAttribute ( 'name' , 'current_query_by_page' );			    input.setAttribute ( 'value', '{&quot;module&quot;:&quot;Accounts&quot;,&quot;action&quot;:&quot;index&quot;,&quot;parentTab&quot;:&quot;Sales&quot;,&quot;ajax_load&quot;:&quot;1&quot;,&quot;loadLanguageJS&quot;:&quot;1&quot;,&quot;searchFormTab&quot;:&quot;basic_search&quot;}' );			    input.setAttribute ( 'type' , 'hidden' );			    form.appendChild ( input ) ;			}			open_popup('ProspectLists','600','400','',true,false,{ 'call_back_function':'set_return_and_save_targetlist','form_name':'targetlist_form','field_to_name_array':{'id':'prospect_list'} } );">Add&nbsp;To Target List</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="targetlist_listview " onclick="             if(sugarListView.get_checks_count() < 1) {                 alert('Please select at least 1 record to proceed.');                 return false;             } 			if ( document.forms['targetlist_form'] ) { 				var form = document.forms['targetlist_form']; 				form.reset; 			} else 				var form = document.createElement ( 'form' ) ; 			form.setAttribute ( 'name' , 'targetlist_form' ); 			form.setAttribute ( 'method' , 'post' ) ; 			form.setAttribute ( 'action' , 'index.php' ); 			document.body.appendChild ( form ) ; 			if ( !form.module ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'module' ); 			    input.setAttribute ( 'value' , 'Accounts' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'action' ); 			    input.setAttribute ( 'value' , 'TargetListUpdate' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.uids ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'uids' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.prospect_list ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'prospect_list' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.return_module ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'return_module' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.return_action ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'return_action' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.select_entire_list ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'select_entire_list' ); 			    input.setAttribute ( 'value', document.MassUpdate.select_entire_list.value); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			if ( !form.current_query_by_page ) { 			    var input = document.createElement('input'); 			    input.setAttribute ( 'name' , 'current_query_by_page' ); 			    input.setAttribute ( 'value', '{&quot;module&quot;:&quot;Accounts&quot;,&quot;action&quot;:&quot;index&quot;,&quot;parentTab&quot;:&quot;Sales&quot;,&quot;ajax_load&quot;:&quot;1&quot;,&quot;loadLanguageJS&quot;:&quot;1&quot;,&quot;searchFormTab&quot;:&quot;basic_search&quot;}' ); 			    input.setAttribute ( 'type' , 'hidden' ); 			    form.appendChild ( input ) ; 			} 			open_popup('ProspectLists','600','400','',true,false,{ 'call_back_function':'set_return_and_save_targetlist', 'form_name':'targetlist_form','field_to_name_array':{'id':'prospect_list'}, 'passthru_data':{'do_contacts' : 1 }   } );">Add&nbsp;Contacts To Target List</a></li><li><a href="#" class="menuItem" onmouseover="hiliteItem(this,'yes');
+" onmouseout="unhiliteItem(this);" onclick="showPopup()">Print&nbsp;as PDF</a><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="export_listview_bottom " onclick="return sListView.send_form(true, 'Accounts', 'index.php?entryPoint=export','Please select at least 1 record to proceed.')">Export</a><a href="javascript:void(0)" id="map_listview_top" onclick="return sListView.send_form(true, 'jjwg_Maps', 'index.php?entryPoint=jjwg_Maps&amp;display_module=Accounts', 'Please select at least 1 record to proceed.')">Map</a></li><li><a href="javascript:void(0)" class="parent-dropdown-action-handler" id="delete_listview_bottom" onclick="return sListView.send_mass_update('selected', 'Please select at least 1 record to proceed.', 1)">Delete</a></li></ul></li></ul>
+
+                              <div class="selectActionsDisabled" id="select_actions_disabled_bottom"><a href="javascript:void(0)" class="parent-dropdown-handler" onclick=""><label class="selected-actions-label hidden-mobile">ACTION<span class="suitepicon suitepicon-action-caret"></span></label><label class="selected-actions-label hidden-desktop">BULK ACTION<span class="suitepicon suitepicon-action-caret"></span></label></a></div>
+
+
+                              <ul class="clickMenu selectmenu searchLink SugarActionMenu listViewLinkButton listViewLinkButton_bottom">
+                                  <li class="sugar_action_button">
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-filter parent-dropdown-handler" onclick="listViewSearchIcon.toggleSearchDialog('latest'); $('#searchDialog .nav-tabs .active').removeClass('active'); $('#searchDialog .nav-tabs li').first().addClass('active'); $('#searchDialog').modal('toggle');" title="Filter"></a>
+                                  </li>
+                              </ul>
+                              <ul class="searchAppliedAlert hidden clickMenu selectmenu searchAppliedAlertLink SugarActionMenu listViewLinkButton listViewLinkButton_bottom">
+                                  <li class="sugar_action_button desktopOnly">
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-list-alt clearSearchIcon parent-dropdown-handler" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Accounts');"></a>
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-remove" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Accounts');">тип</a>
+                                  </li>
+                                  <li class="sugar_action_button mobileOnly">
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-list-alt clearSearchIcon parent-dropdown-handler" onclick=""></a>
+                                      <a href="javascript:void(0)" class="glyphicon glyphicon-remove" onclick="SUGAR.savedViews.shortcutDropdown('_none', 'Accounts');"></a>
+                                  </li>
+                              </ul>												<ul class="clickMenu selectmenu SugarActionMenu columnsFilterLink listViewLinkButton listViewLinkButton_bottom" onclick="columnsFilter.onOpen();">
+                                  <li class="sugar_action_button">
+                                      <a href="#" class="glyphicon glyphicon-th-list" data-toggle="modal" data-target=".modal-columns-filter" title="Column Chooser"></a>
+                                  </li>
+                              </ul>						&nbsp;
+                          </td>
+                          <td nowrap="nowrap" align="right" class="paginationChangeButtons" width="1%">
+                              <button type="button" id="listViewStartButton_bottom" name="listViewStartButton" title="Start" class="list-view-pagination-button" disabled="disabled">
+                                  <span class="suitepicon suitepicon-action-first"></span>
+                              </button>
+                              <button type="button" id="listViewPrevButton_bottom" name="listViewPrevButton" class="list-view-pagination-button" title="Previous" disabled="disabled">
+                                  <span class="suitepicon suitepicon-action-left"></span>
+                              </button>
+                          </td>
+                          <td nowrap="nowrap" width="1%" class="paginationActionButtons">
+                              <div class="pageNumbers">(1 - 2 of 2)</div>
+                          </td>
+                          <td nowrap="nowrap" align="right" class="paginationActionButtons" width="1%">
+                              <button type="button" id="listViewNextButton_bottom" name="listViewNextButton" class="ist-view-pagination-button" title="Next" disabled="disabled">
+                                  <span class="suitepicon suitepicon-action-right"></span>
+                              </button>
+                              <button type="button" id="listViewEndButton_bottom" name="listViewEndButton" title="End" class="list-view-pagination-button" disabled="disabled">
+                                  <span class="suitepicon suitepicon-action-last"></span>
+                              </button>
+                          </td>
+                          <td nowrap="nowrap" width="4px" class="paginationActionButtons"></td>
+                      </tr>
+                      </tbody></table>
+              </td>
+          </tr>	</tfoot>
+      </table>
+
+
+      <div id="searchDialog" class="modal fade modal-search"  role="dialog">
+          <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">├Ч</span></button>
+                      <h4 class="modal-title">Filter</h4>
+                      <!-- Nav tabs -->
+                      <h5 class="searchTabHeader mobileOnly basic active">Quick Filter</h5>
+                      <h5 class="searchTabHeader mobileOnly advanced">Advanced Filter</h5>
+                      <ul class="nav nav-tabs" role="tablist">
+                          <li class="searchTabHandler basic active"><a href="javascript:void(0)" onclick="listViewSearchIcon.toggleSearchDialog('basic'); return false;" aria-controls="searchList" role="tab" data-toggle="tab">Quick Filter</a></li>
+                          <li class="searchTabHandler advanced"><a href="javascript:void(0)" onclick="listViewSearchIcon.toggleSearchDialog('advanced'); return false;" aria-controls="searchList" role="tab" data-toggle="tab">Advanced Filter</a></li>
+                      </ul>
+                  </div>
+                  <div class="modal-body" id="searchList">
+                      <form name="search_form" id="search_form" class="search_form " method="post" action="index.php?module=Accounts&amp;action=index&response=json" onkeydown="submitOnEnter(event);">
+                          <input type="hidden" name="searchFormTab" value="basic_search">
+                          <input type="hidden" name="module" value="Accounts">
+                          <input type="hidden" name="action" value="index">
+                          <input type="hidden" name="query" value="true">
+                          <div id="Accountsbasic_searchSearchForm" style="" class="edit view search basic">
+                              <input type="hidden" id="orderByInput" name="orderBy" value="">
+                              <input type="hidden" id="sortOrder" name="sortOrder" value="">
+                              <script>
+
+                                  $(function() {
+                                      var $dialog = $('<div></div>')
+                                          .html(SUGAR.language.get('app_strings', 'LBL_SEARCH_HELP_TEXT'))
+                                          .dialog({
+                                              autoOpen: false,
+                                              title: SUGAR.language.get('app_strings', 'LBL_HELP'),
+                                              width: 700
+                                          });
+
+                                      $('#filterHelp').click(function() {
+                                          $dialog.dialog('open');
+                                          // prevent the default action, e.g., following a link
+                                      });
+
+                                  });
+
+                              </script>
+                              <div class="row">
+
+
+
+
+                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 search_fields_basic">
+                                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                          <label for="name_basic"> Name</label>
+                                      </div>
+                                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+
+
+                                          <input type="text" name="name_basic" id="name_basic" size="30" maxlength="150" value="" title="" accesskey="9">
+                                      </div>
+                                      <div class="search-clear"></div>
+                                  </div>
+
+
+
+
+                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 search_fields_basic">
+                                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                          <label for="current_user_only_basic">My Items</label>
+                                      </div>
+                                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+
+                                          <input type="hidden" name="current_user_only_basic" value="0">
+                                          <input type="checkbox" id="current_user_only_basic" name="current_user_only_basic" value="1" title="" tabindex="">
+                                      </div>
+                                      <div class="search-clear"></div>
+                                  </div>
+
+
+
+
+                                  <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 search_fields_basic">
+                                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-4">
+                                          <label for="favorites_only_basic">My Favorites</label>
+                                      </div>
+                                      <div class="col-xs-12 col-sm-12 col-md-12 col-lg-8">
+
+                                          <input type="hidden" name="favorites_only_basic" value="0">
+                                          <input type="checkbox" id="favorites_only_basic" name="favorites_only_basic" value="1" title="" tabindex="">
+                                      </div>
+                                      <div class="search-clear"></div>
+                                  </div>
+                              </div>
+                              <div class="row">
+                                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                      <div class="submitButtons">
+                                          <input tabindex="2" title="Search" onclick="SUGAR.savedViews.setChooser();" class="button" type="submit" name="button" value="Search" id="search_form_submit">&nbsp;
+                                          <input tabindex="2" title="Clear" onclick="SUGAR.searchForm.clear_form(this.form); return false;" class="button" type="button" name="clear" id="search_form_clear" value="Clear">
+                                      </div>
+                                      <div class="helpIcon" width="*"><img alt="Help" border="0" id="filterHelp" src="themes/SuiteP/images/help-dashlet.png?v=f7GRvIvWGBDjGa30TOmKhA"></div>
+                                  </div>
+                              </div>
+                              <script>
+
+                                  $(document).ready(function () {
+                                      $( '#advanced_search_link' ).one( "click", function() {
+                                          //alert( "This will be displayed only once." );
+                                          SUGAR.searchForm.searchFormSelect('Accounts|advanced_search','Accounts|basic_search');
+                                      });
+                                  });
+
+                              </script><script language="javascript">if(typeof sqs_objects == 'undefined'){var sqs_objects = new Array;}sqs_objects['search_form_modified_by_name_basic']={"form":"search_form","method":"get_user_array","field_list":["user_name","id"],"populate_list":["modified_by_name_basic","modified_user_id_basic"],"required_list":["modified_user_id"],"conditions":[{"name":"user_name","op":"like_custom","end":"%","value":""}],"limit":"30","no_match_text":"No Match"};sqs_objects['search_form_created_by_name_basic']={"form":"search_form","method":"get_user_array","field_list":["user_name","id"],"populate_list":["created_by_name_basic","created_by_basic"],"required_list":["created_by"],"conditions":[{"name":"user_name","op":"like_custom","end":"%","value":""}],"limit":"30","no_match_text":"No Match"};sqs_objects['search_form_assigned_user_name_basic']={"form":"search_form","method":"get_user_array","field_list":["user_name","id"],"populate_list":["assigned_user_name_basic","assigned_user_id_basic"],"required_list":["assigned_user_id"],"conditions":[{"name":"user_name","op":"like_custom","end":"%","value":""}],"limit":"30","no_match_text":"No Match"};sqs_objects['search_form_parent_name_basic']={"form":"search_form","method":"query","modules":["Accounts"],"group":"or","field_list":["name","id"],"populate_list":["search_form_parent_name_basic","parent_id_basic"],"conditions":[{"name":"name","op":"like_custom","end":"%","value":""}],"required_list":["parent_id"],"order":"name","limit":"30","no_match_text":"No Match"};sqs_objects['search_form_campaign_name_basic']={"form":"search_form","method":"query","modules":["Campaigns"],"group":"or","field_list":["name","id"],"populate_list":["campaign_id_basic","campaign_id_basic"],"conditions":[{"name":"name","op":"like_custom","end":"%","value":""}],"required_list":["campaign_id"],"order":"name","limit":"30","no_match_text":"No Match"};</script></div>
+                          <div id="Accountsadvanced_searchSearchForm" style="display:none" class="edit view search advanced"></div>
+                          <div id="Accountssaved_viewsSearchForm" style="display:  none;"></div>
+                      </form>
+
+                      <script>
+                          function toggleInlineSearch()
+                          {
+                              if (document.getElementById('inlineSavedSearch').style.display == 'none'){
+                                  document.getElementById('showSSDIV').value = 'yes'
+                                  document.getElementById('inlineSavedSearch').style.display = '';
+
+                                  document.getElementById('up_down_img').src='themes/default/images/basic_search.gif?v=f7GRvIvWGBDjGa30TOmKhA';
+                                  document.getElementById('up_down_img').setAttribute('alt',"Hide Options");
+
+                              }else{
+
+                                  document.getElementById('up_down_img').src='themes/default/images/advanced_search.gif?v=f7GRvIvWGBDjGa30TOmKhA';
+                                  document.getElementById('up_down_img').setAttribute('alt',"Show Options");
+
+                                  document.getElementById('showSSDIV').value = 'no';
+                                  document.getElementById('inlineSavedSearch').style.display = 'none';
+                              }
+                          }
+                      </script>
+
+
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal-dialog -->
+      </div>
+
+ </div>
+

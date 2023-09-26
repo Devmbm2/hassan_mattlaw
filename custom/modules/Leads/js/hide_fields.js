@@ -1,0 +1,11 @@
+$(document).ready(function(){
+	if(bean['lead_source']!='Referral_from_Attorney'){
+		$("[field='referral_attorney_c']").parent().html('');
+	}
+	if(bean['lead_source']!='Referral_from_NonAttorney'){
+		$("[field='referral_person_c']").parent().html('');
+	}
+	if(bean['status']!='Dead'){
+		$("[field='reason_for_lost_lead_c']").parent().html('');
+	}
+});

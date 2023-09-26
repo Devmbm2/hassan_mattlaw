@@ -1,0 +1,67 @@
+<?php
+
+require_once('include/MVC/View/views/view.list.php');
+
+class ht_hard_documentsViewList extends ViewList {
+	
+    function listViewProcess() {
+        $this->processSearchForm();
+			if($_SESSION['ht_document_type']=='Hard_Documents'){
+				$this->params['custom_where'] .= " AND documents.hard_or_soft_doc = 'Hard_Documents' ";
+			}
+			if($_SESSION['ht_document_type']=='Soft_Documents'){
+				$this->params['custom_where'] .= " AND documents.hard_or_soft_doc = 'Soft_Documents' ";
+			}
+			$this->lv->setup($this->seed, 'include/ListView/ListViewGeneric.tpl', $this->where, $this->params);
+			echo $this->lv->display();
+		
+    }
+	
+	public function getModuleTitle(
+        $show_help = true
+        )
+    {
+        global $sugar_version, $sugar_flavor, $server_unique_key, $current_language, $action;
+
+        $theTitle = "<div class='moduleTitle'>\n";
+
+        $module = preg_replace("/ /","",$this->module);
+
+        $params = $this->_getModuleTitleParams();
+        $index = 0;
+
+		if(SugarThemeRegistry::current()->directionality == "rtl") {
+			$params = array_reverse($params);
+		}
+		if(count($params) > 1) {
+			array_shift($params);
+		}
+		$count = count($params);
+        $paramString = '';
+        foreach($params as $parm){
+            $index++;
+            $paramString .= $parm;
+            if($index < $count){
+                $paramString .= $this->getBreadCrumbSymbol();
+            }
+        }
+		
+		if($_SESSION['ht_document_type'] == 'Hard_Documents') {
+			$theTitle .= "<h2> Hard Documents </h2>\n";
+		}else if ($_SESSION['ht_document_type'] == 'Soft_Documents') {
+			$theTitle .= "<h2> Soft Documents </h2>\n";
+		}
+		
+        if($this->type == 'list') {
+            $theTitle .= "<span class='utils'>";
+            $createImageURL = SugarThemeRegistry::current()->getImageURL('create-record.gif');
+            if($this->type == 'list') $theTitle .= '<a href="#" class="btn btn-success showsearch"><span class=" glyphicon glyphicon-search" aria-hidden="true"></span></a>';$url = 
+            $theTitle .= "</span>";
+        }
+
+        $theTitle .= "<div class='clear'></div></div>\n";
+        return $theTitle;
+    }
+	
+	
+}

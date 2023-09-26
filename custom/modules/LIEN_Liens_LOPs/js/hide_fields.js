@@ -1,0 +1,11 @@
+$(document).ready(function(){
+	if(bean['type']!='Medicaid'){
+		$("[field='medicaid_date']").parent().html('');
+		$("[field='medicaid_id_number']").parent().html('');
+	}
+	if(bean['type']!='Medicare'){
+		$("[field='medicare_date']").parent().html('');
+		$("[field='medicare_id_number']").parent().html('');
+		$("[field='medicare_type']").parent().html('');
+	}
+});

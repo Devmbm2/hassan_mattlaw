@@ -1,0 +1,2 @@
+<?php
+if(ACLController::checkAccess('FP_events', 'list', true))$module_menu[] =Array("index.php?module=FP_events&action=index&return_module=FP_events&return_action=DetailView&clear_query=true&is_archived=1", 'Archived FP_events',"List", 'FP_events');

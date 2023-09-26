@@ -1,0 +1,15 @@
+<html xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns:m="http://schemas.microsoft.com/office/2004/12/omml"= xmlns="http://www.w3.org/TR/REC-html40"><head><meta http-equiv="Content-Type" content="text/html; charset=Windows-1252"><title></title><!--[if gte mso 9]><xml><w:WordDocument><w:View>Print<w:Zoom>100<w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]--><style>
+        @page
+        {
+            font-family: Arial;
+            size:215.9mm 279.4mm;  /* A4 */
+            margin:14.2mm 17.5mm 14.2mm 16mm; /* Margins: 2.5 cm on each side */
+        }
+        h2 { font-family: Arial; font-size: 18px; text-align:center; }
+        p.para {font-family: Arial; font-size: 13.5px; text-align: justify;}
+        </style></head><body><p class="para">This is a sample output or report that would be great to use when we want to propose multiple dates and times for some event.  What is nice about this format, is we can cut and paste the information easily into a document.<br>Here are the proposed dates for (name of event).  Please select one of these dates and times on or before (deadline date), or else we will schedule the (name of event) on the first date listed below.</p><table id = "event-details" style="" border=1 width=100%>
+			  <tr>
+			  <td style = "">Choices</td>		  
+			  <td style = "">Date Time Start</td>
+			 <td style = "">Date Time End</td>
+		</tr></table></body></html>

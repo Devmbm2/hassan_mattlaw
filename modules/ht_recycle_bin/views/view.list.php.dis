@@ -1,0 +1,322 @@
+<?php
+/*********************************************************************************
+ * By installing or using this file, you are confirming on behalf of the entity
+ * subscribed to the SugarCRM Inc. product ("Company") that Company is bound by
+ * the SugarCRM Inc. Master Subscription Agreement (“MSA”), which is viewable at:
+ * http://www.sugarcrm.com/master-subscription-agreement
+ *
+ * If Company is not bound by the MSA, then by installing or using this file
+ * you are agreeing unconditionally that Company will be bound by the MSA and
+ * certifying that you have authority to bind Company accordingly.
+ *
+ * Copyright (C) 2004-2013 SugarCRM Inc.  All rights reserved.
+ ********************************************************************************/
+
+require_once('modules/ht_recycle_bin/ListView/ListViewSmartyCstm.php');
+require_once('include/MVC/View/views/view.list.php');
+
+class ht_recycle_binViewList extends ViewList
+{
+    
+	 public function init(
+        $bean = null,
+        $view_object_map = array()
+    ) {
+        $this->bean = $bean;
+        $this->view_object_map = $view_object_map;
+        $this->action = isset($GLOBALS['action']) ? $GLOBALS['action'] : null;
+        $this->module = $_SESSION['recycle_module'];
+		
+        $this->_initSmarty();
+	}
+
+	/**
+     * @see ViewList::preDisplay()
+     */
+	function ht_recycle_binViewList(){
+		
+        parent::ViewList();
+		
+    }
+	 protected function _getModuleTitleParams($browserTitle = false)
+    {
+        global $mod_strings;
+
+        return array(
+           "<a href='index.php?module=ht_recycle_bin&action=modules_list'> Recycle BIN </a>".': '. $_SESSION['recycle_module']
+           );
+    }
+	function listViewPrepare(){
+		global $beanList;
+		if(isset($_REQUEST['selected_module']) && !empty($_REQUEST['selected_module'])) $_SESSION['recycle_module'] = $_REQUEST['selected_module'];
+        //retrieve current bean
+        $bean_name = $beanList[$_SESSION['recycle_module']];
+		$current_bean = new $bean_name();
+		$module = $_SESSION['recycle_module'];
+		$this->view_object_map['bean'] = $current_bean;
+		$this->module = $_SESSION['recycle_module'];
+		$this->bean = $current_bean;
+        $metadataFile = $this->getMetaDataFile();
+		
+            
+        
+        if(!isset($module)) {
+            LoggerManager::getLogger()->fatal('Undefined module for list view prepare');
+            return false;
+        }
+
+        $metadataFile = $this->getMetaDataFile();
+
+        if (!file_exists($metadataFile)) {
+            sugar_die(sprintf($GLOBALS['app_strings']['LBL_NO_ACTION'], $this->do_action));
+        }
+
+        require($metadataFile);
+
+        $this->listViewDefs = $listViewDefs;
+
+        if(isset($viewdefs[$this->module]['ListView']['templateMeta'])) {
+            $this->lv->templateMeta = $viewdefs[$this->module]['ListView']['templateMeta'];
+        }
+
+        if (!empty($this->bean->object_name) && isset($_REQUEST[$module . '2_' . strtoupper($this->bean->object_name) . '_offset'])) {//if you click the pagination button, it will populate the search criteria here
+            if (!empty($_REQUEST['current_query_by_page'])) {//The code support multi browser tabs pagination
+                $blockVariables = array('mass', 'uid', 'massupdate', 'delete', 'merge', 'selectCount', 'request_data', 'current_query_by_page', $module . '2_' . strtoupper($this->bean->object_name) . '_ORDER_BY');
+                if (isset($_REQUEST['lvso'])) {
+                    $blockVariables[] = 'lvso';
+                }
+                $current_query_by_page = json_decode(html_entity_decode($_REQUEST['current_query_by_page']), true);
+                foreach ($current_query_by_page as $search_key => $search_value) {
+                    if ($search_key != $module . '2_' . strtoupper($this->bean->object_name) . '_offset' && !in_array($search_key, $blockVariables)) {
+                        if (!is_array($search_value)) {
+                            $_REQUEST[$search_key] = securexss($search_value);
+                        } else {
+                            foreach ($search_value as $key => &$val) {
+                                $val = securexss($val);
+                            }
+                            $_REQUEST[$search_key] = $search_value;
+                        }
+                    }
+                }
+            }
+        }
+        if (!empty($_REQUEST['saved_search_select'])) {
+            if ($_REQUEST['saved_search_select'] == '_none' || !empty($_REQUEST['button'])) {
+                $_SESSION['LastSavedView'][$_REQUEST['module']] = '';
+                unset($_REQUEST['saved_search_select']);
+                unset($_REQUEST['saved_search_select_name']);
+
+                //use the current search module, or the current module to clear out layout changes
+                if (!empty($_REQUEST['search_module']) || !empty($_REQUEST['module'])) {
+                    $mod = !empty($_REQUEST['search_module']) ? $_REQUEST['search_module'] : $_REQUEST['module'];
+                    global $current_user;
+                    //Reset the current display columns to default.
+                    $current_user->setPreference('ListViewDisplayColumns', array(), 0, $mod);
+                }
+            } else if (empty($_REQUEST['button']) && (empty($_REQUEST['clear_query']) || $_REQUEST['clear_query'] != 'true')) {
+                $this->saved_search = loadBean('SavedSearch');
+                $this->saved_search->retrieveSavedSearch($_REQUEST['saved_search_select']);
+                $this->saved_search->populateRequest();
+            } elseif (!empty($_REQUEST['button'])) { // click the search button, after retrieving from saved_search
+                $_SESSION['LastSavedView'][$_REQUEST['module']] = '';
+                unset($_REQUEST['saved_search_select']);
+                unset($_REQUEST['saved_search_select_name']);
+            }
+        }
+		$this->storeQuery = new StoreQuery();
+        if (!isset($_REQUEST['query'])) {
+            $this->storeQuery->loadQuery($this->module);
+            $this->storeQuery->populateRequest();
+        } elseif (!empty($_REQUEST['update_stored_query'])) {
+            $updateKey = $_REQUEST['update_stored_query_key'];
+            $updateValue = $_REQUEST[$updateKey];
+            $this->storeQuery->loadQuery($this->module);
+            $this->storeQuery->populateRequest();
+            $_REQUEST[$updateKey] = $updateValue;
+            $this->storeQuery->saveFromRequest($this->module);
+        } else {
+            $this->storeQuery->saveFromRequest($this->module);
+        }
+        $this->seed = $this->bean;
+        /* print"<pre>";print_r($this->seed); */
+
+        $displayColumns = array();
+        if (!empty($_REQUEST['displayColumns'])) {
+            foreach (explode('|', $_REQUEST['displayColumns']) as $num => $col) {
+                if (!empty($this->listViewDefs[$module][$col]))
+                    $displayColumns[$col] = $this->listViewDefs[$module][$col];
+            }
+        } else {
+            if(!isset($this->listViewDefs[$module])) {
+                LoggerManager::getLogger()->warn('Listview definition is not set for module: ' . $module);
+            } else {
+                foreach ($this->listViewDefs[$module] as $col => $this->params) {
+                    if (!empty($this->params['default']) && $this->params['default'])
+                        $displayColumns[$col] = $this->params;
+                }
+            }
+        }
+        $this->params = array('massupdate' => true);
+        if (!empty($_REQUEST['orderBy'])) {
+            $this->params['orderBy'] = $_REQUEST['orderBy'];
+            $this->params['overrideOrder'] = true;
+            if (!empty($_REQUEST['sortOrder'])) $this->params['sortOrder'] = $_REQUEST['sortOrder'];
+        }
+        if(!isset($this->lv) || !$this->lv) {
+            $this->lv = new stdClass();
+        }
+        $this->lv->displayColumns = $displayColumns;
+
+        $this->module = $module;
+		$this->lv->lvd->listviewName = $this->module;
+        $this->prepareSearchForm();
+
+        if (isset($this->options['show_title']) && $this->options['show_title']) {
+            $moduleName = isset($this->seed->module_dir) ? $this->seed->module_dir : $GLOBALS['mod_strings']['LBL_MODULE_NAME'];
+            echo $this->getModuleTitle(true);
+        }
+
+    }
+	
+	public function listViewProcess()
+ 	{
+ 		$this->processSearchForm();
+		$this->lv->searchColumns = $this->searchForm->searchColumns;
+		if(!$this->headers)
+			return;			
+		$this->lv->setup($this->seed, 'modules/ht_recycle_bin/ListView/tpls/ListViewGeneric.tpl', $this->where, $this->params);
+		$savedSearchName = empty($_REQUEST['saved_search_select_name']) ? '' : (' - ' . $_REQUEST['saved_search_select_name']);
+		echo $this->lv->display();
+ 	}
+    public function preDisplay()
+    {
+        $this->lv = new ListViewSmartyCstm();
+        $this->lv->actionsMenuExtraItems[] = $this->buildUndeleteMenuItem();
+		$this->lv->actionsMenuExtraItems[] = $this->buildPermanentDelete(); 
+		$this->lv->quickViewLinks = false;
+		$this->lv->export = false;
+        $this->lv->delete = false;
+        $this->lv->email = false;
+        $this->lv->showMassupdateFields = false;
+        $this->lv->mailMerge = false;
+        $this->lv->mergeduplicates = false;
+    }
+
+    protected function buildUndeleteMenuItem()
+    {
+        return <<<EOHTML
+<a onclick="sugarListView.get_checks();
+        if(sugarListView.get_checks_count() &lt; 1) {
+            alert('{$app_strings['LBL_LISTVIEW_NO_SELECTED']}');
+            return false;
+        }
+        document.MassUpdate.action.value='undelete';
+		var selected_module = document.createElement('input');
+		var selected_ids = document.createElement('input');
+		selected_module.name = 'selected_module';
+		selected_ids.name = 'selected_ids';
+		selected_module.type = 'hidden';
+		selected_ids.type = 'hidden';
+		selected_ids.value = document.MassUpdate.uid.value;
+		selected_module.value = '{$_SESSION['recycle_module']}';
+		document.MassUpdate.appendChild(selected_ids);
+		document.MassUpdate.appendChild(selected_module);
+        document.MassUpdate.submit();" id="undelete" href="javascript:void(0)">Undelete</a>
+EOHTML;
+    }   
+	protected function buildPermanentDelete()
+    {
+        return <<<EOHTML
+<a onclick="sugarListView.get_checks();
+        if(sugarListView.get_checks_count() &lt; 1) {
+            alert('{$app_strings['LBL_LISTVIEW_NO_SELECTED']}');
+            return false;
+        }
+        document.MassUpdate.action.value='delete_permanent';
+		var selected_module = document.createElement('input');
+		selected_module.name = 'selected_module';
+		selected_module.type = 'hidden';
+		selected_module.value = '{$_SESSION['recycle_module']}';
+		document.MassUpdate.appendChild(selected_module);
+        document.MassUpdate.submit();" id="delete_permanent" href="javascript:void(0)">Permanent Delete</a>
+EOHTML;
+    } 
+	function prepareSearchForm()
+    {
+        $this->searchForm = null;
+		$this->clearSearchTpl();
+        //search
+        $view = 'basic_search';
+        if(!empty($_REQUEST['search_form_view']) && $_REQUEST['search_form_view'] == 'advanced_search')
+            $view = $_REQUEST['search_form_view'];
+        $this->headers = true;
+
+        if(!empty($_REQUEST['search_form_only']) && $_REQUEST['search_form_only'])
+            $this->headers = false;
+        elseif(!isset($_REQUEST['search_form']) || $_REQUEST['search_form'] != 'false')
+        {
+            if(isset($_REQUEST['searchFormTab']) && $_REQUEST['searchFormTab'] == 'advanced_search')
+            {
+                $view = 'advanced_search';
+            }
+            else
+            {
+                $view = 'basic_search';
+            }
+        }
+
+        $this->use_old_search = true;
+        if ((file_exists('modules/' . $this->module . '/SearchForm.html')
+                && !file_exists('modules/' . $this->module . '/metadata/searchdefs.php'))
+            || (file_exists('custom/modules/' . $this->module . '/SearchForm.html')
+                && !file_exists('custom/modules/' . $this->module . '/metadata/searchdefs.php')))
+        {
+            require_once('include/SearchForm/SearchForm.php');
+            $this->searchForm = new SearchForm($this->module, $this->seed);
+        }
+        else
+        {
+            $this->use_old_search = false;
+            require_once('modules/ht_recycle_bin/SearchForm/SearchForm2.php');
+
+            $searchMetaData = SearchForm::retrieveSearchDefs($this->module);
+
+            $this->searchForm = $this->getSearchForm2($this->seed, $this->module, $this->action);
+            $this->searchForm->setup($searchMetaData['searchdefs'], $searchMetaData['searchFields'], 'SearchFormGeneric.tpl', $view, $this->listViewDefs);
+            $this->searchForm->lv = $this->lv;
+        }
+		$this->searchForm->formName = "recycleSearchForm";
+    }
+	function processSearchForm(){
+        parent::processSearchForm();
+		$this->clearSearchTpl();
+    }
+	private function clearSearchTpl(){
+		TemplateHandler::clearCache($this->module,'SearchForm_advanced.tpl');
+		TemplateHandler::clearCache($this->module,'SearchFormFooter.tpl');
+		TemplateHandler::clearCache($this->module,'SearchFormHeader.tpl');
+	}
+	public function display(){
+		/* if($_REQUEST['button'] != 'Next'  && empty($_REQUEST['current_query_by_page']) && !isset($_REQUEST['selected_module']) && !isset($_REQUEST['query']) && !isset($_REQUEST['columnsFilter']) && !$_REQUEST['redirect']){
+			SugarApplication::redirect("index.php?module=ht_recycle_bin&action=modules_list");
+		}	 */
+		/* if($_REQUEST['module'] == 'ht_recycle_bin'  && !isset($_REQUEST['first_page']) && !isset($_REQUEST['selected_module'])){
+			SugarApplication::redirect("index.php?module=ht_recycle_bin&action=modules_list&first_page=true");
+		} */
+		parent::display();
+			echo '<div class="message_dialog_div" id="message_dialog_div" style="display:none; background-color:white;">
+				 <div class="message_dialog" id="message_dialog" style="position: fixed;left: 30%;background-color:white;top: 10%;">
+				 <iframe id="popup_frame" src="" width="100%" height="800">
+				 </iframe>
+				</div>
+			</div>';
+			
+			echo "
+			<script>
+			$(document).ready(function(){
+				$('#actionMenuSidebar').hide();
+			});
+			</script>
+		";
+	} 
+}

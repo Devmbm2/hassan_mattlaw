@@ -1,0 +1,5 @@
+<?xml version="1.0" standalone="yes"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10">
+<path style="fill:#111111; stroke:none;" d="M0 0C1.00364 3.48446 2.61034 6.65757 4 10L6 10C7.38966 6.65757 8.99636 3.48446 10 0L0 0z"/>
+<path style="fill:#ffffff; stroke:none;" d="M0 2L0 10L4 10C3.11336 6.92923 2.03563 4.46582 0 2M9 2L6 10L10 10C9.99278 7.16451 10.0977 4.6127 9 2z"/>
+</svg>

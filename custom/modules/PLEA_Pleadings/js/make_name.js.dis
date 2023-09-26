@@ -1,0 +1,60 @@
+$(document).ready(function(){
+     pleadName();
+     $('#incoming_or_outgoing').attr('onchange','pleadName();');
+     $('#category_id').attr('onchange','pleadName();');
+     $('#subcategory_id').attr('onchange','pleadName();');
+     var fields_to_change = ['notice_type','orders_sub_type','name_of_motion','complaint_answer_type','witness_list_type_c','exhibit_type_c','stipulation_type_c','sum_subp_type_c'];
+     $.each(fields_to_change, function( index, value ){
+                $('#'+value).attr('onchange','pleadName();');
+     });
+     $('#account_id_c').on('change',function(){pleadName();});
+     $('#defendant_organization').on('blur',function(){pleadName();});
+     $('#btn_defendant_organization').on('blur',function(){pleadName();});
+     $('#defendant_organization').on('change',function(){pleadName();});
+     //$('#amount').on('keyup',function(){negName();});
+     $('#contact_id_c').on('change',function(){pleadName();});
+     $('#human_defendant').on('blur',function(){pleadName();});
+     $('#btn_human_defendant').on('blur',function(){pleadName();});
+     $('#human_defendant').on('change',function(){pleadName();});
+     $('#delivery_method_c').on('change',function(){pleadName();});
+});
+
+function pleadName() {
+     var i_o = $('#incoming_or_outgoing').val();
+     var type_pleading = $('#category_id').val();
+     var pleading_subtype = $('#subcategory_id').val();
+     var subtype = $('#subcategory_id option:selected').text();
+     var lastname = $('#lastname_c').val();
+     var nickname = $('#nickname_c').val();
+     var delivery_method = $('#delivery_method_c').val();
+     var map_field;
+     var pleadingName;
+     if (i_o  == "Incoming"){
+        initial = "D's";
+     } else if (i_o == "Outgoing"){
+	initial = "P's";
+     }
+     if (type_pleading == "Pleading"){
+        var map_fields = {Notice: "notice_type", Order: "orders_sub_type",Hearing_Notice: "notice_type",Motion: "name_of_motion",Complaint:"complaint_answer_type",Answer:"complaint_answer_type",Witness_List: "witness_list_type_c",Exhibits: "exhibit_type_c",Stipulation: "stipulation_type_c",Subpoenas_Service: "sum_subp_type_c",sum: "sum_subp_type_c"};
+        $.each(map_fields,function(i,v) {
+	   if(i = pleading_subtype){
+	      map_field = $('#'+map_fields[i]+' option:selected').text();
+	      return false;
+	   } else {
+	      map_field = '';
+	   }
+        });
+     	var arr1 = ['Witness_List', 'Exhibits', 'sum', 'Subpoena'];
+     	var arr2 = ['Subpoenas_Service', 'Verdict'];
+	pleadingName = '';
+	if ($.inArray(pleading_subtype,arr1) != -1){
+	   pleadingName = initial+' '+subtype+' '+map_field+': '+lastname+', '+nickname;
+	} else if ($.inArray(pleading_subtype,arr2) != -1){
+	   pleadingName = subtype;
+	} else {
+	   pleadingName = initial+' '+subtype+' '+map_field+' '+delivery_method;
+	}
+       // });
+     }
+     $('#EditView'+ ' #document_name').val(pleadingName); 
+}

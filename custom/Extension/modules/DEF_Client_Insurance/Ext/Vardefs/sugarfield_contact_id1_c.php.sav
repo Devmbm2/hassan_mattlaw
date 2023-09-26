@@ -1,0 +1,5 @@
+<?php
+ // created: 2018-07-15 19:53:40
+$dictionary['DEF_Client_Insurance']['fields']['contact_id1_c']['inline_edit']=1;
+
+ ?>

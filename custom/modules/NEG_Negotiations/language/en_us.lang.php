@@ -1,0 +1,31 @@
+<?php
+// created: 2020-04-07 08:46:01
+$mod_strings = array (
+  'LBL_TYPE' => 'Type',
+  'LBL_CASE_TYPE' => 'Case Type',
+  'LBL_DATE_OF_NEGOTIATION' => 'Date of Negotiation',
+  'LBL_DOC_ACTIVE_DATE' => 'Publish Date:',
+  'LBL_RELATED_ASSIGNED_TO_CASE' => 'Related Assigned to Case',
+  'LBL_SENT_REC' => 'Sent/Rec',
+  'LBL_LIST_FILE' => 'File:',
+  'LBL_DOC_NAME' => 'Negotiation:',
+  'LBL_SF_DOCUMENT' => 'Negotiation:',
+  'LBL_LIST_DOCUMENT_NAME' => 'Negotiation',
+  'LBL_CASE_STATUS' => 'Case Status',
+  'LBL_EDITVIEW_PANEL1' => 'Case Information',
+  'LBL_QUICKCREATE_PANEL1' => 'Case Information',
+  'LBL_DONE' => 'HD-Reviewed/Processed',
+  'LBL_ASSIGNED_LAWYER_CASES' => 'Assigned Lawyer Cases',
+  'LBL_CASE_ASSIGNED_TO_USER_ID' => 'Case Assigned to (related User ID)',
+  'LBL_CASE_ASSIGNED_TO' => 'Case Assigned to',
+  'LBL_LIST_VIEW_DOCUMENT' => 'View File',
+  'LBL_DESCRIPTION' => 'Memo:',
+  'LBL_NAME' => 'Negotiation Name',
+  'LBL_MODE' => 'Mode',
+  'LBL_RELATED_CASE_ASSIGNED_TO' => 'Case Assigned To',
+  'LBL_DATE_MODIFIED' => 'Date Modified',
+  'LBL_DOC_EXP_DATE' => 'Expiration Date',
+  'LBL_MULTIPLE_ASSIGNED_USERS' => 'Multiple Case Assigned To',
+  'LBL_RELATED_CASE_ASSISTANT' => 'Case Assistant',
+  'LBL_SAVED_BY_NAME'=>"Saved By"
+);

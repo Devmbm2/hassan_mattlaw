@@ -1,0 +1,20 @@
+$(document).ready(function() {
+    showhideDocType();
+    $('#type_c').attr('onchange','showhideDocType();');
+});
+function showhideDocType(){
+        $('#doctor_type_c').closest('.edit-view-row-item').hide();
+	//$('#assistant').closest('.edit-view-row-item').hide();
+	//$('#assistant_phone').closest('.edit-view-row-item').hide();
+              
+	var conttype = $('#type_c').val();
+        if(conttype == "Doctor")
+        {
+           $('#doctor_type_c').closest('.edit-view-row-item').show();
+	}
+	if(conttype == "Judge") {
+	   //$('#assistant').closest('.edit-view-row-item').show();
+           //$('#assistant_phone').closest('.edit-view-row-item').show();
+        }
+}
+

@@ -1,0 +1,20 @@
+$(document).ready(function(){
+	if(bean['subcategory_id']!='Transcripts_Statements'){
+		$("[field='transcript_types_c']").parent().html('');
+	}
+	if(bean['subcategory_id']!='Client_Insurance'){
+		$("[field='insurance_type_c']").parent().html('');
+	}
+	if(bean['subcategory_id']!='Authorizations'){
+		$("[field='authorization_types_c']").parent().html('');
+	}
+	if(bean['subcategory_id']!='Defendant_Insurance'){
+		$("[field='def_insurance_types_c']").parent().html('');
+	}
+	if(bean['transcript_type_c']!='Trial_Transcript'){
+		$("[field='trial_transcript_types_c']").parent().html('');
+	}
+	if(bean['insurance_type_c']!='Uninsured_Motorist_Stacked'){
+		$("[field='number_of_vehicles_stacking_c']").parent().html('');
+	}
+});

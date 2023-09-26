@@ -1,0 +1,5 @@
+{
+    "require": {
+        "stephenlake/php-google-holidays": "^1.0"
+    }
+}

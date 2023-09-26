@@ -1,0 +1,27 @@
+<?php
+// created: 2020-01-24 00:44:55
+$mod_strings = array (
+  'LBL_IDIOMA_PLANTILLA' => 'Language',
+  'LBL_SF_SUBCATEGORY' => 'Sub Category',
+  'LBL_SF_CATEGORY' => 'Category',
+  'LBL_LITIGATION' => 'Litigation',
+  'LBL_PRE_SUIT' => 'Pre-Suit',
+  'LBL_MEDICAL_INFORMATION' => 'Medical Information',
+  'LBL_INSURANCE' => 'Insurance',
+  'LBL_INVESTIGATION' => 'Investigation',
+  'LBL_EDITVIEW_PANEL1' => 'New Panel 1',
+  'LBL_CLOSING' => 'Closing',
+  'LBL_PLEADING_TYPES' => 'Pleading Types',
+  'LBL_SELECT_CONTACT_FOR_DOCUMENT' => 'Select Contact for Document',
+  'LBL_SELECTION_CONTACT_STATUS' => 'Selection Contact Status',
+  'LBL_CAPTION_COS_FIXED' => 'Caption COS Fixed',
+  'LBL_DOC_URL' => 'Remote Link',
+  'LBL_DOC_TYPE' => 'Source',
+  'LBL_DOC_TYPE_POPUP' => 'Select a source to which this document will be uploaded<br> and from which it will be available.',
+  'LNK_NEW_RECORD' => 'Create Document Template',
+  'LNK_LIST' => 'View Document Templates',
+  'LNK_IMPORT_DHA_PLANTILLASDOCUMENTOS' => 'Import Document Templates',
+  'LBL_LIST_FORM_TITLE' => 'Document Templates List',
+  'LBL_SEARCH_FORM_TITLE' => 'Search Document Templates',
+  'LBL_DATE_MODIFIED' => 'Date Modified',
+);

@@ -1,0 +1,2 @@
+<?php
+	if(ACLController::checkAccess('Documents', 'list', true))$module_menu[] =Array("index.php?module=Documents&action=index&return_module=Documents&return_action=DetailView&clear_query=true&is_sentout=1", $mod_strings['LNK_MONITOR_SENT_DOCUMENTS'],"List", 'Documents');

@@ -1,0 +1,33 @@
+<?php
+$dictionary['ht_Damages']['fields']['case_name'] = array(
+    'name' => 'case_name',
+      'rname' => 'name',
+      'id_name' => 'case_id',
+      'vname' => 'LBL_CASE_NAME',
+      'type' => 'relate',
+      'link' => 'cases',
+      'table' => 'cases',
+      'join_name' => 'cases',
+      'isnull' => 'true',
+      'module' => 'Cases',
+      'dbType' => 'varchar',
+      'len' => 100,
+      'source' => 'non-db',
+      'unified_search' => true,
+      'comment' => 'The name of the case represented by the case_id field',
+      'required' => true,
+      'importable' => 'required',
+    );
+$dictionary['ht_Damages']['fields']['case_id'] = array(
+    'name' => 'case_id',
+      'type' => 'relate',
+      'dbType' => 'id',
+      'rname' => 'id',
+      'module' => 'Cases',
+      'id_name' => 'case_id',
+      'reportable' => false,
+      'vname' => 'LBL_CASE_ID',
+      'audited' => true,
+      'massupdate' => false,
+      'comment' => 'The case to which the case is associated',
+    );

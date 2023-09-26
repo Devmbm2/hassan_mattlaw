@@ -1,0 +1,180 @@
+<?php
+$module_name = 'PLEA_Pleadings';
+$OBJECT_NAME = 'PLEA_PLEADINGS';
+$listViewDefs [$module_name] = 
+array (
+  'DATE_FILED_C' => 
+  array (
+    'type' => 'date',
+    'default' => true,
+    'label' => 'LBL_DATE_FILED',
+    'width' => '10%',
+  ),
+  'PLEA_PLEADINGS_CASES_NAME' => 
+  array (
+    'type' => 'relate',
+    'link' => true,
+    'label' => 'LBL_PLEA_PLEADINGS_CASES_FROM_CASES_TITLE',
+    'width' => '10%',
+    'default' => true,
+    'id' => 'PLEA_PLEADINGS_CASESCASES_IDA',
+  ),
+  'PLEADING_NAME_C' => 
+  array (
+    'type' => 'varchar',
+    'default' => true,
+    'link' => true,
+    'sortable' => true,
+    'label' => 'LBL_PLEADING_NAME',
+    'width' => '10%',
+  ),
+  'SUBCATEGORY_ID' => 
+  array (
+    'width' => '40%',
+    'label' => 'LBL_LIST_SUBCATEGORY',
+    'default' => true,
+  ),
+  'UPLOADFILE' => 
+  array (
+    'type' => 'file',
+    'label' => 'LBL_FILE_UPLOAD',
+    'width' => '10%',
+    'default' => true,
+  ),
+  'CASE_ASSIGNED_TO_C' => 
+  array (
+    'type' => 'relate',
+    'default' => false,
+    'studio' => 'visible',
+    'label' => 'LBL_CASE_ASSIGNED_TO',
+    'id' => 'USER_ID_C',
+    'link' => true,
+    'width' => '10%',
+  ),
+  'HUMAN_DEFENDANT' => 
+  array (
+    'type' => 'relate',
+    'studio' => 'visible',
+    'label' => 'LBL_HUMAN_DEFENDANT',
+    'id' => 'CONTACT_ID_C',
+    'link' => true,
+    'width' => '10%',
+    'default' => false,
+  ),
+  'DEFENDANT_ORGANIZATION' => 
+  array (
+    'type' => 'relate',
+    'studio' => 'visible',
+    'label' => 'LBL_DEFENDANT_ORGANIZATION',
+    'id' => 'ACCOUNT_ID_C',
+    'link' => true,
+    'width' => '10%',
+    'default' => false,
+  ),
+  'MODIFIED_BY_NAME' => 
+  array (
+    'width' => '10%',
+    'label' => 'LBL_MODIFIED_USER',
+    'module' => 'Users',
+    'id' => 'USERS_ID',
+    'default' => false,
+    'sortable' => false,
+    'related_fields' => 
+    array (
+      0 => 'modified_user_id',
+    ),
+  ),
+  'FILE_EXT' => 
+  array (
+    'type' => 'varchar',
+    'label' => 'LBL_FILE_EXTENSION',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'COMPLAINT_ANSWER_TYPE' => 
+  array (
+    'type' => 'enum',
+    'studio' => 'visible',
+    'label' => 'LBL_COMPLAINT_ANSWER_TYPE',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'NAME_OF_MOTION' => 
+  array (
+    'type' => 'varchar',
+    'label' => 'LBL_NAME_OF_MOTION',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'ORDERS_SUB_TYPE' => 
+  array (
+    'type' => 'enum',
+    'studio' => 'visible',
+    'label' => 'LBL_ORDERS_SUB_TYPE',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'EXP_DATE' => 
+  array (
+    'width' => '10%',
+    'label' => 'LBL_LIST_EXP_DATE',
+    'default' => false,
+  ),
+  'FILING_SUB_TYPE' => 
+  array (
+    'type' => 'enum',
+    'studio' => 'visible',
+    'label' => 'LBL_FILING_SUB_TYPE',
+    'width' => '5%',
+    'default' => false,
+  ),
+  'NOTICE_TYPE' => 
+  array (
+    'type' => 'enum',
+    'studio' => 'visible',
+    'label' => 'LBL_NOTICE_TYPE',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'HEARING_TYPE' => 
+  array (
+    'type' => 'enum',
+    'studio' => 'visible',
+    'label' => 'LBL_HEARING_TYPE',
+    'width' => '10%',
+    'default' => false,
+  ),
+  'CATEGORY_ID' => 
+  array (
+    'width' => '40%',
+    'label' => 'LBL_LIST_CATEGORY',
+    'default' => false,
+  ),
+  'CASE_STATUS_C' => 
+  array (
+    'type' => 'enum',
+    'default' => false,
+    'label' => 'LBL_CASE_STATUS',
+    'width' => '10%',
+  ),
+  'CREATED_BY_NAME' => 
+  array (
+    'width' => '2%',
+    'label' => 'LBL_LIST_LAST_REV_CREATOR',
+    'default' => false,
+    'sortable' => false,
+  ),
+  'ACTIVE_DATE' => 
+  array (
+    'width' => '10%',
+    'label' => 'LBL_LIST_ACTIVE_DATE',
+    'default' => false,
+  ),
+  'DOCUMENT_NAME' => 
+  array (
+    'width' => '40%',
+    'label' => 'LBL_NAME',
+    'link' => true,
+    'default' => false,
+  ),
+);

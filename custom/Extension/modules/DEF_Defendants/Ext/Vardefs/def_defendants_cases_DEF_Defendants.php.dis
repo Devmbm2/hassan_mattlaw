@@ -1,0 +1,11 @@
+<?php
+// created: 2017-07-11 18:42:20
+$dictionary["DEF_Defendants"]["fields"]["def_defendants_cases"] = array (
+  'name' => 'def_defendants_cases',
+  'type' => 'link',
+  'relationship' => 'def_defendants_cases',
+  'source' => 'non-db',
+  'module' => 'Cases',
+  'bean_name' => 'Case',
+  'vname' => 'LBL_DEF_DEFENDANTS_CASES_FROM_CASES_TITLE',
+);

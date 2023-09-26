@@ -1,0 +1,2 @@
+<?php
+if(ACLController::checkAccess('Contacts', 'list', true))$module_menu[] =Array("index.php?module=Contacts&action=index&return_module=Contacts&return_action=DetailView&clear_query=true&is_archived=1", 'Archived Contacts',"List", 'Contacts');
